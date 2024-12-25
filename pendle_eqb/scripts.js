@@ -23,11 +23,11 @@ async function updateEQBPendleBooster(force = false) {
 }
 
 async function updateEQBPoolDetails(){
-    
+
 }
 
 function saveEQBPoolsResultAsJSFile(output) {
-    const timestamp = Date.now();
+    const timestamp = Date.now()/1000;
     const jsContent = `const saved_eqb_pools = ${output};
 
 const saved_eqb_pools_updated_at = ${timestamp};`;
