@@ -5,21 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EQB Info</title>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.0/dist/ethers.umd.min.js"></script>
-    <script src="./scripts.js" defer></script>
-    <script src="./saved_eqb_pools.js" defer></script>
     <script src="../common/time.js" defer></script>
     <script src="../abi/erc.js" defer></script>
     <script src="../abi/pendle.js" defer></script>
     <script src="../abi/equilibria.js" defer></script>
+    <script src="./saved_eqb_pools.js" defer></script>
+    <script src="./buttons.js" defer></script>
+    <script src="./scripts.js" defer></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar (left side) -->
         <div class="sidebar">
             <h1>EQB Info</h1>
 
-            <!-- Tag 1: EQB Pool Length -->
             <div class="tag">
                 <div class="tag-header">
                     <h2>EQB Pool Length</h2>
@@ -29,7 +28,6 @@
                 </div>
             </div>
 
-            <!-- Tag 2: Pool Info -->
             <div class="tag">
                 <div class="tag-header">
                     <h2>Pool Info</h2>
@@ -54,7 +52,6 @@
             </div>
         </div>
 
-        <!-- Main Content (right side) -->
         <div class="main-content">
             <div class="output-wrapper">
                 <textarea id="output" readonly></textarea>
@@ -63,87 +60,74 @@
     </div>
 
     <script>
-        let EQB_PENDLE_BOOSTER;
-        let EQBPoolLength;
-        let EQBPoolLength_local;
-        let printAll = false;
-
-        async function updateEQBPendleBooster() {
-            EQBPoolLength_local = saved_eqb_pools.length;
-            if (EQB_PENDLE_BOOSTER && EQBPoolLength !== 0) {
-                return;
-            }
-            EQB_PENDLE_BOOSTER = new ethers.Contract(EQB_PENDLE_BOOSTER_ADDRESS, abi_iequilibria_pendle_booster_mainchain, RPC_PROVIDER);
-            EQBPoolLength = await EQB_PENDLE_BOOSTER.poolLength();
-        }
-
         document.getElementById('readBtn').addEventListener('click', async () => {
-            await updateEQBPendleBooster();
-            document.getElementById('output').value = `EQB Real Time Pool Length: ${EQBPoolLength}\nEQB Local Pool Length: ${EQBPoolLength_local}`;
+            const button = document.getElementById('readBtn');
+            lockUI();
+            try {
+                setButtonText(button, 'pending...');
+                await updateEQBPendleBooster();
+                document.getElementById('output').value = `EQB Real Time Pool Length: ${EQBPoolLength}\nEQB Local Pool Length: ${EQBPoolLength_local}\nEQB Local Pool Updated At: ${EQB_pool_local_last_updated} UTC`;
+            } catch (error) {
+                document.getElementById('output').value = `Error: ${error.message}`;
+            } finally {
+                setButtonText(button, 'Read');
+                unlockUI();
+            }
         });
 
         document.getElementById('getPoolInfoBtn').addEventListener('click', async () => {
-            await updateEQBPendleBooster();
-
-            // Get user input for options
-            const printDetailedInfo = document.getElementById('printDetailedInfo').value === 'true';
-            const downloadJS = document.getElementById('downloadJS').value === 'true';
-
-            if (downloadJS) {
-                printAll = true;  // If "Download As JS" is true, force detailed info
-            } else {
-                printAll = printDetailedInfo;
-            }
-
+            const button = document.getElementById('getPoolInfoBtn');
+            lockUI();
             try {
-                let maxPools = EQBPoolLength;
-                // maxPools = Math.min(maxPools, 3);
-                let startID = EQBPoolLength_local;
+                setButtonText(button, 'pending...');
+                await updateEQBPendleBooster();
+                const printDetailedInfo = document.getElementById('printDetailedInfo').value === 'true';
+                const downloadJS = document.getElementById('downloadJS').value === 'true';
 
+                if (downloadJS) {
+                    printAll = true;
+                } else {
+                    printAll = printDetailedInfo;
+                }
+
+                let maxPools = EQBPoolLength;
+                let startID = EQBPoolLength_local;
                 let output = `[\n`;
                 for (let i = 0; i < startID; i++) {
                     const info = saved_eqb_pools[i];
-                    output += formatEQBPoolOutput(
-                        info.pendle_lpt_expiry, info.sy_symbol, 
-                        info.pendle_lpt, info.pendle_SY, info.pendle_PT, info.pendle_YT, 
-                        info.eqb_pid, info.eqb_token, info.eqb_reward_pool,
-                        printAll
-                    );
-                    if (i < startID - 1) {
-                        output += `,\n`;
-                    }
+                    output += formatEQBPoolJSON2Output(info, printAll);
+                    if (i < startID - 1) output += `,\n`;
                     document.getElementById('output').value = output;
                 }
 
-                if (startID > 0){
-                    if (startID < maxPools) {
-                        output += `,`;
-                    }
+                if (startID > 0) {
+                    if (startID < maxPools) output += `,`;
                     output += `\n`;
                 }
-                
+
                 for (let i = startID; i < maxPools; i++) {
                     const poolInfo = await EQB_PENDLE_BOOSTER.poolInfo(i);
                     const ipMarketContract = new ethers.Contract(poolInfo.market, abi_ipmarket, RPC_PROVIDER);
                     const [SY, PT, YT] = await ipMarketContract.readTokens();
                     const expiryTimestamp = await ipMarketContract.expiry();
-
                     const sy = new ethers.Contract(SY, abi_erc20metadata, RPC_PROVIDER);
                     const sysymbol = await sy.symbol();
                     const expiryFormatted = formatTimeUTC(expiryTimestamp);
 
-                    output += formatEQBPoolOutput(
-                        expiryFormatted, sysymbol, 
-                        poolInfo.market, SY, PT, YT, 
-                        i, poolInfo.token, poolInfo.rewardPool,
-                        printAll
-                    );
-
-                    if (i < maxPools - 1) {
-                        output += `,`;
-                    }
+                    const poolInfoJSON = {
+                        "eqb_pid": i,
+                        "pendle_lpt": poolInfo.market,
+                        "pendle_lpt_expiry": expiryFormatted,
+                        "sy_symbol": sysymbol,
+                        "pendle_SY": SY,
+                        "pendle_PT": PT,
+                        "pendle_YT": YT,
+                        "eqb_token": poolInfo.token,
+                        "eqb_reward_pool": poolInfo.rewardPool
+                    };
+                    output += formatEQBPoolJSON2Output(poolInfoJSON, printAll);
+                    if (i < maxPools - 1) output += `,`;
                     output += `\n`;
-
                     document.getElementById('output').value = output;
                 }
 
@@ -157,12 +141,14 @@
                 document.getElementById('output').value = output + "\n";
             } catch (error) {
                 document.getElementById('output').value = `Error: ${error.message}`;
+            } finally {
+                setButtonText(button, 'Get Pool Info');
+                unlockUI();
             }
         });
 
         document.addEventListener("DOMContentLoaded", function () {
             const tags = document.querySelectorAll('.tag-header');
-
             tags.forEach(tag => {
                 tag.addEventListener('click', function () {
                     const body = this.nextElementSibling;
@@ -190,101 +176,4 @@
         });
     </script>
 </body>
-
-<style>
-    .container {
-        display: flex;
-        height: 100vh;
-        flex-direction: row;
-        overflow: hidden;
-    }
-
-    .sidebar {
-        width: 25%;
-        background-color: #fff;
-        padding: 20px;
-        border-right: 2px solid #ddd;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        overflow-y: auto;
-        height: 100%;
-    }
-
-    .tag {
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        overflow: hidden;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .tag-header {
-        background-color: #f4f7fb;
-        padding: 12px;
-        cursor: pointer;
-    }
-
-    .tag-header h2 {
-        margin: 0;
-        font-size: 16px;
-    }
-
-    .tag-body {
-        padding: 10px;
-        display: none;
-        overflow: hidden;
-        height: 0;
-    }
-
-    .tag.active .tag-body {
-        display: block;
-        height: auto;
-    }
-
-    .tag-button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px;
-        width: 100%;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-
-    .tag-button:hover {
-        background-color: #45a049;
-    }
-
-    .main-content {
-        width: 75%;
-        background-color: #fff;
-        padding: 10px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .output-wrapper {
-        margin-top: 2px;
-        flex: 1;
-    }
-
-    textarea {
-        font-family: 'Courier New', monospace;
-        font-size: 15px;
-        resize: vertical;
-        height: 100%;
-        width: 100%;
-        overflow-y: scroll;
-        white-space: pre-wrap;
-        line-height: 1.4;
-        color: #333;
-        border: 0px solid #ccc;
-    }
-</style>
-
 </html>
-

@@ -1,0 +1,124 @@
+.container {
+    display: flex;
+    height: 100vh;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 25%;
+    background-color: #fff;
+    padding: 20px;
+    border-right: 2px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.tag {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.tag-header {
+    background-color: #f4f7fb;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.tag-header h2 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.tag-body {
+    padding: 10px;
+    display: none;
+    overflow: hidden;
+    height: 0;
+}
+
+.tag.active .tag-body {
+    display: block;
+    height: auto;
+}
+
+.tag-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.tag-button:hover {
+    background-color: #45a049;
+}
+
+.main-content {
+    width: 75%;
+    background-color: #fff;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.output-wrapper {
+    margin-top: 2px;
+    flex: 1;
+}
+
+textarea {
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    resize: vertical;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    line-height: 1.4;
+    color: #333;
+    border: 0px solid #ccc;
+}
+
+select {
+    background-color: #f4f7fb;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+select:hover {
+    border-color: #4CAF50;
+}
+
+select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background-color: #fff;
+}
+
+option {
+    padding: 8px 12px;
+    background-color: #fff;
+    color: #333;
+}
+
+option:hover {
+    background-color: #f0f0f0;
+}

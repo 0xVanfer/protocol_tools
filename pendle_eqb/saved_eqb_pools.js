@@ -1606,3 +1606,5 @@ const saved_eqb_pools = [
       "eqb_reward_pool": "0x9af545ee31aa89f1EB7FEFB9f719C6ED8d7788f2",
     }
   ];
+
+const saved_eqb_pools_updated_at = 1735111181;
