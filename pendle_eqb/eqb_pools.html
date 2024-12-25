@@ -6,11 +6,12 @@
     <title>EQB Info</title>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.0/dist/ethers.umd.min.js"></script>
     <script src="../common/time.js" defer></script>
+    <script src="../common/buttons.js" defer></script>
+    <script src="../common/elememt.js" defer></script>
     <script src="../abi/erc.js" defer></script>
     <script src="../abi/pendle.js" defer></script>
     <script src="../abi/equilibria.js" defer></script>
     <script src="./saved_eqb_pools.js" defer></script>
-    <script src="./buttons.js" defer></script>
     <script src="./scripts.js" defer></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -33,13 +34,6 @@
                     <h2>Pool Info</h2>
                 </div>
                 <div class="tag-body">
-                    <div class="option">
-                        <label for="printDetailedInfo">Print Detailed Info</label>
-                        <select id="printDetailedInfo">
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                        </select>
-                    </div>
                     <div class="option">
                         <label for="downloadJS">Download As JS</label>
                         <select id="downloadJS">
@@ -81,66 +75,14 @@
             try {
                 setButtonText(button, 'pending...');
                 await updateEQBPendleBooster(false);
-                const printDetailedInfo = document.getElementById('printDetailedInfo').value === 'true';
                 const downloadJS = document.getElementById('downloadJS').value === 'true';
-
-                if (downloadJS) {
-                    printAll = true;
-                } else {
-                    printAll = printDetailedInfo;
-                }
-
-                let maxPools = EQBPoolLength;
-                let startID = EQBPoolLength_local;
-                let output = `[\n`;
-                for (let i = 0; i < startID; i++) {
-                    const info = saved_eqb_pools[i];
-                    output += formatEQBPoolJSON2Output(info, printAll);
-                    if (i < startID - 1) output += `,\n`;
-                    document.getElementById('output').value = output;
-                }
-
-                if (startID > 0) {
-                    if (startID < maxPools) output += `,`;
-                    output += `\n`;
-                }
-
-                for (let i = startID; i < maxPools; i++) {
-                    const poolInfo = await EQB_PENDLE_BOOSTER.poolInfo(i);
-                    const ipMarketContract = new ethers.Contract(poolInfo.market, abi_ipmarket, RPC_PROVIDER);
-                    const [SY, PT, YT] = await ipMarketContract.readTokens();
-                    const expiryTimestamp = await ipMarketContract.expiry();
-                    const sy = new ethers.Contract(SY, abi_erc20metadata, RPC_PROVIDER);
-                    const sysymbol = await sy.symbol();
-                    const expiryFormatted = formatTimeUTC(expiryTimestamp);
-
-                    const poolInfoJSON = {
-                        "eqb_pid": i,
-                        "pendle_lpt": poolInfo.market,
-                        "pendle_lpt_expiry": expiryFormatted,
-                        "sy_symbol": sysymbol,
-                        "pendle_SY": SY,
-                        "pendle_PT": PT,
-                        "pendle_YT": YT,
-                        "eqb_token": poolInfo.token,
-                        "eqb_reward_pool": poolInfo.rewardPool
-                    };
-                    output += formatEQBPoolJSON2Output(poolInfoJSON, printAll);
-                    if (i < maxPools - 1) output += `,`;
-                    output += `\n`;
-                    document.getElementById('output').value = output;
-                }
-
-                output += `]`;
-                document.getElementById('output').value = output;
+                output = await updateEQBPendleDetails(true, true)
 
                 if (downloadJS) {
                     saveEQBPoolsResultAsJSFile(output);
                 }
-
-                document.getElementById('output').value = output + "\n";
             } catch (error) {
-                document.getElementById('output').value = `Error: ${error.message}`;
+                setElementValueAndScrollDown("output", `Error: ${error.message}`);
             } finally {
                 setButtonText(button, 'Get Pool Info');
                 unlockUI();
