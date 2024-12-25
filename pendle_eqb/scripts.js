@@ -4,19 +4,26 @@ const DEFAULT_RPC_ETHEREUM = "https://rpc.ankr.com/eth";
 const RPC_PROVIDER = new ethers.providers.JsonRpcProvider(DEFAULT_RPC_ETHEREUM);
 
 let EQB_PENDLE_BOOSTER;
+let EQBPoolDetails;
 let EQBPoolLength;
 let EQBPoolLength_local;
 let EQB_pool_local_last_updated;
 let printAll = false;
 
-async function updateEQBPendleBooster() {
+
+// force: must update even the EQBPoolLength > 0
+async function updateEQBPendleBooster(force = false) {
     EQBPoolLength_local = saved_eqb_pools.length;
     EQB_pool_local_last_updated = formatTimeUTC(saved_eqb_pools_updated_at)
-    if (EQB_PENDLE_BOOSTER && EQBPoolLength !== 0) {
+    if (!force && EQB_PENDLE_BOOSTER && EQBPoolLength !== 0) {
         return;
     }
     EQB_PENDLE_BOOSTER = new ethers.Contract(EQB_PENDLE_BOOSTER_ADDRESS, abi_iequilibria_pendle_booster_mainchain, RPC_PROVIDER);
     EQBPoolLength = await EQB_PENDLE_BOOSTER.poolLength();
+}
+
+async function updateEQBPoolDetails(){
+    
 }
 
 function saveEQBPoolsResultAsJSFile(output) {

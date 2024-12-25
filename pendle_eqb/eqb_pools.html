@@ -65,7 +65,7 @@
             lockUI();
             try {
                 setButtonText(button, 'pending...');
-                await updateEQBPendleBooster();
+                await updateEQBPendleBooster(true);
                 document.getElementById('output').value = `EQB Real Time Pool Length: ${EQBPoolLength}\nEQB Local Pool Length: ${EQBPoolLength_local}\nEQB Local Pool Updated At: ${EQB_pool_local_last_updated} UTC`;
             } catch (error) {
                 document.getElementById('output').value = `Error: ${error.message}`;
@@ -80,7 +80,7 @@
             lockUI();
             try {
                 setButtonText(button, 'pending...');
-                await updateEQBPendleBooster();
+                await updateEQBPendleBooster(false);
                 const printDetailedInfo = document.getElementById('printDetailedInfo').value === 'true';
                 const downloadJS = document.getElementById('downloadJS').value === 'true';
 
