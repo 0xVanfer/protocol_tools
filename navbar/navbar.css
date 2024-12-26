@@ -1,0 +1,63 @@
+.navbar {
+    background-color: #f4f7fb;
+    padding: 5px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 20;
+}
+
+.nav-item {
+    margin-right: 20px;
+    position: relative;
+}
+
+.nav-item span {
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.nav-arrow {
+    margin-left: 5px;
+    font-size: 10px; /* Arrow size reduced */
+    color: #aaa;    /* Arrow color changed to lighter */
+}
+
+.nav-item .nav-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 4px;
+    padding: 10px;
+    width: 150px;
+}
+
+.nav-item.active .nav-dropdown-content {
+    display: block;
+}
+
+.nav-item .nav-dropdown-content a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px 12px;
+    display: block;
+}
+
+.nav-item .nav-dropdown-content a:hover {
+    background-color: #f0f0f0;
+}
+
+body {
+    margin-top: 35px; 
+}

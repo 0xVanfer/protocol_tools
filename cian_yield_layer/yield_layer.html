@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EQB Info</title>
+    <title>Yield Layer</title>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.0/dist/ethers.umd.min.js"></script>
     <script src="../common/params.js" defer></script>
     <script src="../common/time.js" defer></script>
     <script src="../common/buttons.js" defer></script>
     <script src="../common/elememt.js" defer></script>
 
-    <script src="../abi/erc.js" defer></script>
-    <script src="../abi/pendle.js" defer></script>
-    <script src="../abi/equilibria.js" defer></script>
-
-    <script src="./saved_eqb_pools.js" defer></script>
     <script src="./scripts.js" defer></script>
 
     <script src="../navbar/navbar.js" defer></script>
@@ -27,33 +22,34 @@
 <body>
     <div class="container">
         <div class="sidebar">
-            <h1>Equilibria</h1>
+            <h1>Yield Layer</h1>
 
             <div class="tag">
                 <div class="tag-header">
-                    <h2>EQB Pool Length</h2>
-                </div>
-                <div class="tag-body">
-                    <button id="readBtn" class="tag-button">Read</button>
-                </div>
-            </div>
-
-            <div class="tag">
-                <div class="tag-header">
-                    <h2>Pool Info</h2>
+                    <h2>History Csv</h2>
                 </div>
                 <div class="tag-body">
                     <div class="option">
-                        <label for="download_eqb_pools">Download Pool Info</label>
-                        <select id="download_eqb_pools">
-                            <option value="false">No Download</option>
-                            <option value="js">.js</option>
-                            <!-- <option value="csv">.csv</option> -->
-                            <option value="json">.json</option>
+                        <label for="blockchain">Select Blockchain:</label>
+                        <select id="blockchain" required>
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="option">
+                        <label for="vaultName">Select Vault:</label>
+                        <select id="vaultName" required>
+                            <!-- Options will be populated based on selected blockchain -->
+                        </select>
+                    </div>
+                    <div class="option">
+                        <label for="downloadCsv">Download In CSV</label>
+                        <select id="downloadCsv">
+                            <option value="true">True</option>
+                            <option value="false">False</option>
                         </select>
                     </div>
                     <br>
-                    <button id="getPoolInfoBtn" class="tag-button">Get Pool Info</button>
+                    <button id="getHistory" class="tag-button">Get Vault History Info</button>
                 </div>
             </div>
         </div>

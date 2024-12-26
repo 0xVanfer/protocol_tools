@@ -1,8 +1,3 @@
-const EQB_PENDLE_BOOSTER_ADDRESS = "0x4D32C8Ff2fACC771eC7Efc70d6A8468bC30C26bF";
-const DEFAULT_RPC_ETHEREUM = "https://rpc.ankr.com/eth";
-            
-const RPC_PROVIDER = new ethers.providers.JsonRpcProvider(DEFAULT_RPC_ETHEREUM);
-
 let EQB_PENDLE_BOOSTER;
 let EQBPoolDetails = saved_eqb_pools;
 let EQBPoolLength;
@@ -13,22 +8,22 @@ let printAll = false;
 // force: must update even the EQBPoolLength > 0
 async function updateEQBPendleBooster(force = false) {
     EQBPoolLength_local = saved_eqb_pools.length;
-    EQB_pool_local_last_updated = formatTimeUTC(saved_eqb_pools_updated_at)
+    EQB_pool_local_last_updated = formatDateOnly(saved_eqb_pools_updated_at)
     if (!force && EQB_PENDLE_BOOSTER && EQBPoolLength !== 0) {
         return;
     }
-    EQB_PENDLE_BOOSTER = new ethers.Contract(EQB_PENDLE_BOOSTER_ADDRESS, abi_iequilibria_pendle_booster_mainchain, RPC_PROVIDER);
+    EQB_PENDLE_BOOSTER = new ethers.Contract(EQB_PENDLE_BOOSTER_ADDRESS, abi_iequilibria_pendle_booster_mainchain, RPC_PROVIDER_ETH);
     EQBPoolLength = await EQB_PENDLE_BOOSTER.poolLength();
 }
 
 async function getEQBPoolInfoByPid(pid){
     const poolInfo = await EQB_PENDLE_BOOSTER.poolInfo(pid);
-    const ipMarketContract = new ethers.Contract(poolInfo.market, abi_ipmarket, RPC_PROVIDER);
+    const ipMarketContract = new ethers.Contract(poolInfo.market, abi_ipmarket, RPC_PROVIDER_ETH);
     const [SY, PT, YT] = await ipMarketContract.readTokens();
     const expiryTimestamp = await ipMarketContract.expiry();
-    const sy = new ethers.Contract(SY, abi_erc20metadata, RPC_PROVIDER);
+    const sy = new ethers.Contract(SY, abi_erc20metadata, RPC_PROVIDER_ETH);
     const sysymbol = await sy.symbol();
-    const expiryFormatted = formatTimeUTC(expiryTimestamp);
+    const expiryFormatted = formatDateOnly(expiryTimestamp);
 
     const poolInfoJSON = {
         "eqb_pid": pid,
@@ -43,6 +38,15 @@ async function getEQBPoolInfoByPid(pid){
     };
 
     return poolInfoJSON;
+}
+
+function saveEQBPoolsResultAsJSONFile(output) {
+    const timestamp = Math.floor(Date.now()/1000);
+    const blob = new Blob([output], { type: 'application/javascript' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `saved_eqb_pools_${timestamp}.json`;
+    link.click();
 }
 
 function saveEQBPoolsResultAsJSFile(output) {
@@ -73,7 +77,7 @@ function formatEQBPoolJSON2Output(info, printAll = true){
         output += `    "pendle_YT": "${info.pendle_YT}",\n`;
         output += `    "eqb_token": "${info.eqb_token}",\n`;
     }
-    output += `    "eqb_reward_pool": "${info.eqb_reward_pool}",\n`;
+    output += `    "eqb_reward_pool": "${info.eqb_reward_pool}"\n`;
     output += `  }`;
     return output;
 }
