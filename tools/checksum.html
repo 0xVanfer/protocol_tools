@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checksum</title>
+    <link rel="icon" href="https://ethereum.org/images/favicon.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.0/dist/ethers.umd.min.js"></script>
+    <script src="../common/params.js" defer></script>
+    <script src="../common/time.js" defer></script>
+    <script src="../common/buttons.js" defer></script>
+    <script src="../common/elememt.js" defer></script>
+    <script src="../common/address.js" defer></script>
+
+    <script src="./scripts.js" defer></script>
+
+    <script src="../navbar/navbar.js" defer></script>
+    <script src="../common/tag_listener.js" defer></script>
+    <script src="./listeners.js" defer></script>
+
+    <link rel="stylesheet" href="../navbar/navbar.css">
+    <link rel="stylesheet" href="../common/common.css">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+        <h1>Address Converter</h1>
+        <textarea id="addressesInput" placeholder="Enter Ethereum addresses" rows="4"></textarea>
+        <button id="convertAddressesBtn" class="tag-button">Convert</button>
+        <div id="log">
+            Your addresses will be recognized automatically. 
+            For example, the input can be:
+            <pre>
+[
+    {
+        "symbol": "stETH",
+        "address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
+    },
+    {
+        "symbol": "eETH",
+        "address": "0x35fA164735182de50811E8e2E824cFb9B6118ac2"
+    },
+    {
+        "symbol": "WETH",
+        "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    }
+]
+            </pre>
+        </div>
+        </div>
+
+        <div class="main-content">
+            <div class="output-wrapper">
+                <div id="output-title">
+                    <button onclick="document.getElementById('output').innerHTML = ''">Refresh</button>
+                </div>
+                <div id="output"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

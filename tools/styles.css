@@ -1,0 +1,66 @@
+#addressesInput {
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    width: 90%;
+    height: 100px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: none;
+    overflow-y: auto;
+}
+
+#log {
+    margin-top: 20%;
+    padding: 5px;
+    overflow-y: auto;
+    height: 35%;
+    border-radius: 5px;
+    font-size: 10px;
+    display: block;
+    color: gray;
+}
+
+.copy-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+}
+.copy-btn:hover {
+    background-color: #218838;
+}
+.copied {
+    display: inline-block;
+    margin-left: 10px;
+    color: #28a745;
+    font-size: 12px;
+    visibility: hidden;
+}
+
+#output-container {
+    flex: 0 0 70%;
+    padding: 0 20px;
+    overflow-y: auto;
+}
+
+.result {
+    font-size: 15px;
+    margin: 5px 0;
+}
+
+hr {
+    margin: 10px 0;
+    border: 1px solid #ccc;
+}
+
+.address {
+    font-family: monospace;
+}
+
+.empty-line {
+    height: 10px;
+}

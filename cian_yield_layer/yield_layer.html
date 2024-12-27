@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yield Layer</title>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.0/dist/ethers.umd.min.js"></script>
+    <title>Yield Layer Info</title>
+    <link rel="icon" href="https://yieldlayer.cian.app/favicon.ico" type="image/x-iconsx-icon">
     <script src="../common/params.js" defer></script>
     <script src="../common/time.js" defer></script>
     <script src="../common/buttons.js" defer></script>
@@ -56,6 +56,9 @@
 
         <div class="main-content">
             <div class="output-wrapper">
+                <div id="output-title">
+                    <button onclick="document.getElementById('output').value = ''">Refresh</button>
+                </div>
                 <textarea id="output" readonly></textarea>
             </div>
         </div>

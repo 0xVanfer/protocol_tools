@@ -15,6 +15,7 @@ const navbarHTML = `
         <div class="nav-item" id="nav-tools">
             <span>Tools <span class="nav-arrow">&#9660;</span></span>
             <div class="nav-dropdown-content">
+                <a href="${toHome}tools/checksum.html">Checksum Addr</a>
             </div>
         </div>
     </div>

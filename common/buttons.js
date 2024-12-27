@@ -17,3 +17,12 @@ function unlockButtons(selector) {
 function setButtonText(button, text) {
     button.textContent = text;
 }
+
+function copyToClipboard(button, text) {
+    navigator.clipboard.writeText(text);
+    const copiedText = button.nextElementSibling;
+    copiedText.style.visibility = 'visible';
+    setTimeout(() => {
+        copiedText.style.visibility = 'hidden';
+    }, 1000);
+}

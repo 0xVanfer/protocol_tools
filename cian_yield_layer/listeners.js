@@ -17,7 +17,7 @@ document.getElementById('getHistory').addEventListener('click', async () => {
         const title = ["timestamp", "date", "apy", "tvl asset", "net tvl asset", "tvl usd", "holders count"];
         const rows = res.data.map(line => [
             line.timestamp,
-            formatDateOnly(line.timestamp), // Use the new format function
+            formatDateTime(line.timestamp), // Use the new format function
             (line.apy * Math.pow(10, -2)).toString(),  // Assuming APY needs to shift right by 2
             line.tvl_base.toString(),
             line.net_tvl_base.toString(),
