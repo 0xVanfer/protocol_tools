@@ -21,14 +21,41 @@ async function initializeMappings() {
         await fetchVaults(network);
     }
     setElementValueAndScrollDown("output", `Processing Options...`);
-    populateDropdown();
+    populateDropdown_history_csv();
+    populateDropdown_pending_withdrawals();
     setElementValueAndScrollDown("output", ``);
     unlockButtons('.tag-button');
 }
 
-function populateDropdown() {
-    const blockchainSelect = document.getElementById('blockchain');
-    const vaultSelect = document.getElementById('vaultName');
+function populateDropdown_history_csv() {
+    const blockchainSelect = document.getElementById('blockchain_history_csv');
+    const vaultSelect = document.getElementById('vaultName_history_csv');
+
+    networks.forEach(network => {
+        const option = document.createElement('option');
+        option.value = network;
+        option.textContent = network.charAt(0).toUpperCase() + network.slice(1);
+        blockchainSelect.appendChild(option);
+    });
+
+    blockchainSelect.addEventListener('change', () => {
+        vaultSelect.innerHTML = ''; // Clear previous options
+        const selectedNetwork = blockchainSelect.value;
+        Object.entries(mapping[selectedNetwork] || {}).forEach(([poolName, poolAddress]) => {
+            const option = document.createElement('option');
+            option.value = poolAddress;
+            option.textContent = `${poolName} (${poolAddress.substring(0, 6)})`;
+            vaultSelect.appendChild(option);
+        });
+    });
+
+    // Trigger change event to load initial vaults
+    blockchainSelect.dispatchEvent(new Event('change'));
+}
+
+function populateDropdown_pending_withdrawals() {
+    const blockchainSelect = document.getElementById('blockchain_pending_withdrawals');
+    const vaultSelect = document.getElementById('vaultName_pending_withdrawals');
 
     networks.forEach(network => {
         const option = document.createElement('option');
