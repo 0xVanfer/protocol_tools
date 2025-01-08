@@ -11,6 +11,12 @@ const abi_yl_redeem_operator_steth = [
 ];
 
 const abi_yl_common_vault = [
+    "function symbol() view returns (string)",
+    "function name() view returns (string)",
+    "function decimals() view returns (uint8)",
+    "function totalSupply() view returns (uint256)",
+    "function balanceOf(address) view returns (uint256)",
+
     "function getVaultParams() view returns (tuple(address underlyingToken, string name, string symbol, uint256 marketCapacity, uint256 managementFeeRate, uint256 managementFeeClaimPeriod, uint256 maxPriceUpdatePeriod, uint256 revenueRate, uint256 exitFeeRate, address admin, address rebalancer, address feeReceiver, address redeemOperator))",
     "function getVaultState() view returns (tuple(uint256 exchangePrice, uint256 revenueExchangePrice, uint256 revenue, uint256 lastClaimMngFeeTime, uint256 lastUpdatePriceTime))",
     "function optionalDeposit(address _token, uint256 _assets, address _receiver, address _referral) payable returns (uint256 shares_)",

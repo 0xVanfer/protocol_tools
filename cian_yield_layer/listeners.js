@@ -1,5 +1,3 @@
-const redeemOperatorCache = new Map();
-
 document.getElementById('getHistory_history_csv').addEventListener('click', async () => {
     const button = document.getElementById('getHistory_history_csv');
     lockButtons('.tag-button');
@@ -61,53 +59,32 @@ document.getElementById('get_pending_withdrawals').addEventListener('click', asy
     setElementValueAndScrollDown("output", `Reading from onchain...`);
 
     try {
-        let RPC;
         let users = [];
-
-        if (blockchain === "ethereum") {
-            RPC = RPC_PROVIDER_ETH;
-        } else if (blockchain === "arbitrum") {
-            RPC = RPC_PROVIDER_ARB;
-        } else {
-            setElementValueAndScrollDown("output", `Not supported chain: ${blockchain}`);
+        const vaultInfo = await getVaultInfoByAddress(blockchain, vaultAddress)
+        if (vaultInfo === undefined){
+            setElementValueAndScrollDown("output", `Get vault info error.`);
             unlockButtons('.tag-button');
-            setButtonText(button, 'Get Vault History Info');
+            setButtonText(button, 'Get Vault Pending Withdrawals');
             return;
         }
-
-        let redeemOperator;
-        let pendingUsers, notUsedeETHUsers, allUsersShares;
-        if (redeemOperatorCache.has(vaultAddress)) {
-            redeemOperator = redeemOperatorCache.get(vaultAddress);
-        } else {
-            const vault = new ethers.Contract(vaultAddress, abi_yl_common_vault, RPC);
-            const vaultParams = await vault.getVaultParams();
-            const redeemOperatorAddress = vaultParams.redeemOperator;
-
-            if (vaultAddress === "0xB13aa2d0345b0439b064f26B82D8dCf3f508775d") {
-                redeemOperator = new ethers.Contract(redeemOperatorAddress, abi_yl_redeem_operator_steth, RPC);
-            } else {
-                redeemOperator = new ethers.Contract(redeemOperatorAddress, abi_yl_redeem_operator, RPC);
-            }
-            // Cache the redeemOperator contract instance for future use
-            redeemOperatorCache.set(vaultAddress, redeemOperator);
-        }
+   
+        const redeemOperator = vaultInfo.get("redeem_operator");
 
         if (vaultAddress === "0xB13aa2d0345b0439b064f26B82D8dCf3f508775d") {
             [pendingUsers, notUsedeETHUsers] = await redeemOperator.allPendingWithdrawers();
             if (pendingUsers.length === 0){
-                setElementValueAndScrollDown("output", `[]`);
+                setElementValueAndScrollDown("output", `No pending users.`);
                 unlockButtons('.tag-button');
-                setButtonText(button, 'Get Vault History Info');
+                setButtonText(button, 'Get Vault Pending Withdrawals');
                 return;
             }
             allUsersShares = await redeemOperator.withdrawalRequests(pendingUsers);
         } else {
             pendingUsers = await redeemOperator.allPendingWithdrawers();
             if (pendingUsers.length === 0){
-                setElementValueAndScrollDown("output", `[]`);
+                setElementValueAndScrollDown("output", `No pending users.`);
                 unlockButtons('.tag-button');
-                setButtonText(button, 'Get Vault History Info');
+                setButtonText(button, 'Get Vault Pending Withdrawals');
                 return;
             }
             allUsersShares = await redeemOperator.withdrawalRequests(pendingUsers);
@@ -119,12 +96,138 @@ document.getElementById('get_pending_withdrawals').addEventListener('click', asy
             users.push({user: user, shares: userShares});
         }
 
-        setElementValueAndScrollDown("output", JSON.stringify(users, null, 2));
+        // setElementValueAndScrollDown("output", JSON.stringify(users, null, 2));
+
+        let table  = "User                                        | Shares\n";
+        table += "--------------------------------------------|--------------------\n";  
+
+        users.forEach(userData => {
+            const user = userData.user.padEnd(44, ' '); 
+            const shares = userData.shares.toString().padStart(8, ' ');  
+            table += `${user}| ${shares}\n`;
+        });
+
+        setElementValueAndScrollDown("output", table);
 
     } catch (error) {
         setElementValueAndScrollDown("output", `Error: ${error.message}`);
     } finally {
         unlockButtons('.tag-button');
-        setButtonText(button, 'Get Vault History Info');
+        setButtonText(button, 'Get Vault Pending Withdrawals');
+    }
+})
+
+document.getElementById('get_yl_info').addEventListener('click', async () => {
+    const button = document.getElementById('get_yl_info');
+    lockButtons('.tag-button');
+    setButtonText(button, 'pending...');
+    const blockchain = document.getElementById('blockchain_yl_info').value;
+    const vaultAddress = document.getElementById('vaultName_yl_info').value;
+
+    setElementValueAndScrollDown("output", `Reading from onchain...`);
+
+    try {
+        const vaultInfo = await getVaultInfoByAddress(blockchain, vaultAddress)
+        if (vaultInfo === undefined){
+            setElementValueAndScrollDown("output", `Get vault info error.`);
+            unlockButtons('.tag-button');
+            setButtonText(button, 'Get Vault Info');
+            return;
+        }
+        let output = "";
+
+        output += `vault          : ${vaultAddress}\n`
+        output += `symbol         : ${vaultInfo.get("symbol")}\n`
+        output += `underlying     : ${vaultInfo.get("underlying")}\n`
+        output += `redeem operator: ${vaultInfo.get("redeem_operator_address")}\n`
+        output += `performance fee: ${vaultInfo.get("revenueRate")*100}%\n`
+        output += `exit fee       : ${vaultInfo.get("exitFeeRate")*100}%\n`
+        output += `lp price       : ${vaultInfo.get("lpPrice")}\n`
+
+        setElementValueAndScrollDown("output", output);
+
+    } catch (error) {
+        setElementValueAndScrollDown("output", `Error: ${error.message}`);
+    } finally {
+        unlockButtons('.tag-button');
+        setButtonText(button, 'Get Vault Info');
+    }
+})
+
+document.getElementById('get_user_history').addEventListener('click', async () => {
+    const button = document.getElementById('get_user_history');
+    lockButtons('.tag-button');
+    setButtonText(button, 'pending...');
+    const blockchain = document.getElementById('blockchain_user_history').value;
+    const vaultAddress = document.getElementById('vaultName_user_history').value;
+    const userAddress = document.getElementById('address_input_user_history').value;
+    const startDate = document.getElementById('start_date_user_history').value;
+    const endDate = document.getElementById('end_date_user_history').value;
+    const downloadCsv = document.getElementById('downloadCsv_user_history').value === 'true';
+    const vaultName = document.getElementById('vaultName_user_history').selectedOptions[0].textContent.split(' (')[0]; // Get pool name
+
+    let startTimestamp = 0;
+    let endTimestamp = 0;
+
+    if (startDate) startTimestamp=Math.floor(new Date(startDate).getTime() / 1000);;
+    if (endDate) endTimestamp=Math.floor(new Date(endDate).getTime() / 1000);
+    if (startDate >= endDate){
+        setElementValueAndScrollDown("output", `Failed: start date >= end date`);
+        unlockButtons('.tag-button');
+        setButtonText(button, 'Get User History Info');
+        return;
+    }
+
+    setElementValueAndScrollDown("output", `Reading from onchain...`);
+
+    try {
+        let output = "";
+        let res = [];
+        const vaultContract = await getVaultContractByAddress(blockchain, vaultAddress)
+        if (vaultContract === undefined){
+            setElementValueAndScrollDown("output", `Get vault contract error.`);
+            unlockButtons('.tag-button');
+            setButtonText(button, 'Get User History Info');
+            return;
+        }
+
+        const vaultInfo = await getVaultInfoByAddress(blockchain, vaultAddress)
+        if (vaultInfo === undefined){
+            setElementValueAndScrollDown("output", `Get vault info error.`);
+            unlockButtons('.tag-button');
+            setButtonText(button, 'Get User History Info');
+            return;
+        }
+
+        const decimals = vaultInfo.get("decimals");
+
+        for (let timestamp = startTimestamp; timestamp < endTimestamp; timestamp += 86400){
+            const blockNum = await getBlockNumberByTimestamp(blockchain, timestamp)
+            if (blockNum === 0){
+                continue;
+            }
+            // output += `timestamp: ${timestamp}; blockNum: ${blockNum}\n`
+            const balanceBig = await vaultContract.balanceOf(userAddress, {blockTag: Number(blockNum)})
+            const totalSupplyBig = await vaultContract.totalSupply( {blockTag: Number(blockNum)})
+            const balance = ethers.utils.formatUnits(balanceBig, decimals);
+            const totalSupply = ethers.utils.formatUnits(totalSupplyBig, decimals);
+            res.push({
+                "timestamp":timestamp, 
+                "date":new Date(timestamp*1000).toISOString().split('T')[0],
+                "shares":balance,
+                "total supply":totalSupply,
+                "weight":(balance / totalSupply).toFixed(8),
+            })
+            setElementValueAndScrollDown("output", JSON.stringify(res, null, 2));
+        }
+
+        if(downloadCsv)downloadJsonToCsv(res,`user_history_shares_${vaultName}_${userAddress}_${startDate}_${endDate}.csv`)
+        return;
+
+    } catch (error) {
+        setElementValueAndScrollDown("output", `Error: ${error.message}`);
+    } finally {
+        unlockButtons('.tag-button');
+        setButtonText(button, 'Get User History Info');
     }
 })
