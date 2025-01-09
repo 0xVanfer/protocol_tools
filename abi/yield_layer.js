@@ -19,8 +19,6 @@ const abi_yl_common_vault = [
 
     "function getVaultParams() view returns (tuple(address underlyingToken, string name, string symbol, uint256 marketCapacity, uint256 managementFeeRate, uint256 managementFeeClaimPeriod, uint256 maxPriceUpdatePeriod, uint256 revenueRate, uint256 exitFeeRate, address admin, address rebalancer, address feeReceiver, address redeemOperator))",
     "function getVaultState() view returns (tuple(uint256 exchangePrice, uint256 revenueExchangePrice, uint256 revenue, uint256 lastClaimMngFeeTime, uint256 lastUpdatePriceTime))",
-    "function optionalDeposit(address _token, uint256 _assets, address _receiver, address _referral) payable returns (uint256 shares_)",
-    "function optionalRedeem(address _token, uint256 _shares, uint256 _cutPercentage, address _receiver, address _owner) returns (uint256 assetsAfterFee_)",
     "function getWithdrawFee(uint256 _amount) view returns (uint256 amount_)",
     "function exchangePrice() view returns (uint256)",
     "function revenueExchangePrice() view returns (uint256)",
@@ -29,3 +27,33 @@ const abi_yl_common_vault = [
     "function underlyingTvl() view returns (uint256)"
 ];
 
+
+const abi_yl_eco_earn = [
+    "function decimals() view returns (uint8)",
+    "function symbol() view returns (string)",
+    "function name() view returns (string)",
+    "function totalSupply() view returns (uint256)",
+    "function balanceOf(address) view returns (uint256)",
+
+    "function asset() view returns (address)",
+    "function totalAssets() view returns (uint256)",
+    "function convertToShares(uint256 assets) view returns (uint256)",
+    "function convertToAssets(uint256 shares) view returns (uint256)",
+    "function maxDeposit(address receiver) view returns (uint256)",
+    "function previewDeposit(uint256 assets) view returns (uint256)",
+    "function maxMint(address receiver) view returns (uint256)",
+    "function previewMint(uint256 shares) view returns (uint256)",
+    "function maxWithdraw(address owner) view returns (uint256)",
+    "function previewWithdraw(uint256 assets) view returns (uint256)",
+    "function maxRedeem(address owner) view returns (uint256)",
+    "function previewRedeem(uint256 shares) view returns (uint256)",
+    
+    "function PRECISION() view returns (uint256)",
+    "function bridgeAdapter(uint256 _chainId) view returns (address)",
+    "function depositCap() view returns (uint256)",
+    "function directWithdraw() view returns (bool)",
+    "function exchangePrice() view returns (uint256)",
+    "function paused() view returns (bool)",
+    "function rebalancer() view returns (address)",
+    "function redeemOperator() view returns (address)"
+];

@@ -69,6 +69,13 @@ document.getElementById('get_pending_withdrawals').addEventListener('click', asy
         }
    
         const redeemOperator = vaultInfo.get("redeem_operator");
+        const redeemOperatorAddress = vaultInfo.get("redeem_operator_address");
+        if (redeemOperatorAddress === ADDRESS_ZERO){
+            setElementValueAndScrollDown("output", `Cannot withdraw (?).`);
+            unlockButtons('.tag-button');
+            setButtonText(button, 'Get Vault Pending Withdrawals');
+            return;
+        }
 
         if (vaultAddress === "0xB13aa2d0345b0439b064f26B82D8dCf3f508775d") {
             [pendingUsers, notUsedeETHUsers] = await redeemOperator.allPendingWithdrawers();
@@ -90,15 +97,17 @@ document.getElementById('get_pending_withdrawals').addEventListener('click', asy
             allUsersShares = await redeemOperator.withdrawalRequests(pendingUsers);
         }
 
+        let sharesSum = 0;
         for (let i = 0; i < allUsersShares.length; i++) {
             const user = pendingUsers[i];
             const userShares = ethers.utils.formatUnits(allUsersShares[i], 18);
             users.push({user: user, shares: userShares});
+            sharesSum += Number(userShares);
         }
 
         // setElementValueAndScrollDown("output", JSON.stringify(users, null, 2));
 
-        let table  = "User                                        | Shares\n";
+        let table  = `User                                        | Shares (total = ${sharesSum})\n`;
         table += "--------------------------------------------|--------------------\n";  
 
         users.forEach(userData => {

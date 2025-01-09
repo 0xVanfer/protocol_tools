@@ -13,6 +13,13 @@ async function getVaultContractByAddress(chainName, vaultAddress){
         if (RPC === undefined){
             return undefined;
         }
+
+        if (vaultAddress === "0x3498fDed9C88Ae83b3BC6a302108F2da408e613b"){
+            const vault = new ethers.Contract(vaultAddress, abi_yl_eco_earn, RPC); 
+            vaultContractCache.set(vaultAddress, vault);
+            return vault;           
+        }
+        
         const vault = new ethers.Contract(vaultAddress, abi_yl_common_vault, RPC);
         vaultContractCache.set(vaultAddress, vault);
         return vault;
@@ -33,6 +40,27 @@ async function getVaultInfoByAddress(chainName, vaultAddress){
             return undefined;
         }
         const newVaultInfo = new Map();
+
+        if (vaultAddress === "0x3498fDed9C88Ae83b3BC6a302108F2da408e613b"){
+            const decimals = await vault.decimals();
+            const symbol = await vault.symbol();
+            const asset = await vault.asset();
+            const redeemOperatorAddress =  await vault.redeemOperator();
+            const lpPrice = ethers.utils.formatUnits((await vault.exchangePrice()),decimals);
+            const redeemOperator = new ethers.Contract(redeemOperatorAddress, abi_yl_redeem_operator, RPC);
+
+            newVaultInfo.set("underlying", asset);
+            newVaultInfo.set("symbol", symbol);
+            newVaultInfo.set("decimals", decimals);
+            newVaultInfo.set("revenueRate", 0.1);
+            newVaultInfo.set("exitFeeRate", 0);
+            newVaultInfo.set("lpPrice", lpPrice);
+            newVaultInfo.set("redeem_operator_address", redeemOperatorAddress);
+            newVaultInfo.set("redeem_operator", redeemOperator);
+
+            vaultInfoCache.set(vaultAddress, newVaultInfo);
+            return newVaultInfo;           
+        }
 
         const decimals = await vault.decimals();
         const vaultParams = await vault.getVaultParams();
