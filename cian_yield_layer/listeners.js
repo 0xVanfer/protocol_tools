@@ -100,7 +100,7 @@ document.getElementById('get_pending_withdrawals').addEventListener('click', asy
         let sharesSum = 0;
         for (let i = 0; i < allUsersShares.length; i++) {
             const user = pendingUsers[i];
-            const userShares = ethers.utils.formatUnits(allUsersShares[i], 18);
+            const userShares = ethers.utils.formatUnits(allUsersShares[i], vaultInfo.get("decimals"));
             users.push({user: user, shares: userShares});
             sharesSum += Number(userShares);
         }
