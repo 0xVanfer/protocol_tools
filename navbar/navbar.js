@@ -10,6 +10,7 @@ const navbarHTML = `
         <div class="nav-item" id="nav-addresses">
             <span>Addresses <span class="nav-arrow">&#9660;</span></span>
             <div class="nav-dropdown-content">
+                <a href="${toHome}addresses/addresses.html">Find Address</a>
             </div>
         </div>
         <div class="nav-item" id="nav-tools">

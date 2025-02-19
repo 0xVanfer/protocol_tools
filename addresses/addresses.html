@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Address</title>
+    <link rel="icon" href="https://ethereum.org/images/favicon.png" type="image/png">
+    <script src="../common/params.js" defer></script>
+    <script src="../common/time.js" defer></script>
+    <script src="../common/buttons.js" defer></script>
+    <script src="../common/elememt.js" defer></script>
+
+
+    <script src="./scripts.js" defer></script>
+
+    <script src="../navbar/navbar.js" defer></script>
+    <script src="../common/tag_listener.js" defer></script>
+    <script src="./listeners.js" defer></script>
+
+    <link rel="stylesheet" href="../navbar/navbar.css">
+    <link rel="stylesheet" href="../common/common.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Find Address</h1>
+
+            <div class="tag">
+                <div class="tag-header">
+                    <h2>Filter</h2>
+                </div>
+                <div class="tag-body">
+                    <!-- chainID -->
+                    <div class="option">
+                        <label for="chain_id">Chain</label>
+                        <select id="chain_id">
+                            <option value="0">All</option>
+                            <option value="1">Ethereum(1)</option>
+                            <option value="10">Optimism(10)</option>
+                            <option value="56">BSC(56)</option>
+                            <option value="66">OK(66)</option>
+                            <option value="100">Gnosis(100)</option>
+                            <option value="128">Heco(128)</option>
+                            <option value="137">Polygon(137)</option>
+                            <option value="146">Sonic(146)</option>
+                            <option value="238">Blast(238)</option>
+                            <option value="250">Fantom(250)</option>
+                            <option value="252">Fraxtal(252)</option>
+                            <option value="314">Filecoin(314)</option>
+                            <option value="324">ZkSync(324)</option>
+                            <option value="1101">PolygonZk(1101)</option>
+                            <option value="1284">Moonbeam(1284)</option>
+                            <option value="1329">Sei(1329)</option>
+                            <option value="2031">Centrifuge(2031)</option>
+                            <option value="2222">Kava(2222)</option>
+                            <option value="5000">Mantle(5000)</option>
+                            <option value="8453">Base(8453)</option>
+                            <option value="13371">Immutable(13371)</option>
+                            <option value="42161">Arbitrum(42161)</option>
+                            <option value="42220">Celo(42220)</option>
+                            <option value="43114">Avalanche(43114)</option>
+                            <option value="59144">Linea(59144)</option>
+                            <option value="534352">Scroll(534352)</option>
+                            <option value="810180">ZkLinkNova(810180)</option>
+                            <option value="11155111">Sepolia(11155111)</option>
+                        </select>
+                    </div>
+                    <!-- filter -->
+                    <div class="option">
+                        <label for="filters">Filters (seperate with ",")</label>
+                        <textarea id="filters" class="addresses_input" placeholder="Example: aave,wsteth"></textarea>
+                    </div>
+                    <!-- link or not -->
+                    <div class="option">
+                        <label for="need_blockscan_links">Return With Blockscan Links</label>
+                        <select id="need_blockscan_links">
+                            <option value="false">false</option>
+                            <option value="true">true</option>
+                        </select>
+                    </div>
+                    <br>
+                    <button id="findAddressBtn" class="tag-button">Find Address</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="output-wrapper">
+                <div id="output-title">
+                    <button onclick="document.getElementById('output').value = ''">Refresh</button>
+                </div>
+                <textarea id="output" readonly></textarea>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
