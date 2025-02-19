@@ -3,35 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Address</title>
-    <link rel="icon" href="https://ethereum.org/images/favicon.png" type="image/png">
+    <title>Blockscans</title>
+    <link rel="icon" href="https://etherscan.io/images/favicon3.ico" type="image/x-iconsx-icon">
     <script src="../common/params.js" defer></script>
     <script src="../common/time.js" defer></script>
     <script src="../common/buttons.js" defer></script>
     <script src="../common/elememt.js" defer></script>
-
-
-    <script src="./scripts.js" defer></script>
+    <script src="../common/address.js" defer></script>
 
     <script src="../navbar/navbar.js" defer></script>
     <script src="../common/tag_listener.js" defer></script>
-    <script src="./listeners.js" defer></script>
 
     <link rel="stylesheet" href="../navbar/navbar.css">
     <link rel="stylesheet" href="../common/common.css">
+    <link rel="stylesheet" href="./styles.css">
+
+    <style>
+        pre {
+            font-family: "Courier New", monospace; 
+            font-size: 16px; 
+            color: #333; 
+            line-height: 1.4; 
+        }
+        a {
+            color: blue;
+            text-decoration: underline;
+        }
+      </style>
 </head>
 <body>
     <div class="container">
         <div class="sidebar">
-            <h1>Find Address</h1>
-
+            <h1>Blockscan Links</h1>
             <div class="tag">
                 <div class="tag-header">
-                    <h2>Filter</h2>
+                    <h2>List All</h2>
                 </div>
                 <div class="tag-body">
                     <!-- chainID -->
-                    <div class="option">
+                    <!-- <div class="option">
                         <label for="chain_id">Chain</label>
                         <select id="chain_id">
                             <option value="0">All</option>
@@ -64,32 +74,48 @@
                             <option value="810180">ZkLinkNova(810180)</option>
                             <option value="11155111">Sepolia(11155111)</option>
                         </select>
-                    </div>
-                    <!-- filter -->
-                    <div class="option">
-                        <label for="filters">Filters (seperate with "," or " ")</label>
-                        <textarea id="filters" class="addresses_input" placeholder="Example: aave,v3,atoken rseth"></textarea>
-                    </div>
-                    <!-- link or not -->
-                    <div class="option">
-                        <label for="need_blockscan_links">Return With Blockscan Links</label>
-                        <select id="need_blockscan_links">
-                            <option value="false">false</option>
-                            <option value="true">true</option>
-                        </select>
-                    </div>
-                    <br>
-                    <button id="findAddressBtn" class="tag-button">Find Address</button>
+                    </div> -->
+                    <!-- <br> -->
+                    <button id="listAllBlockscanBtn" class="tag-button">List</button>
                 </div>
             </div>
         </div>
 
         <div class="main-content">
             <div class="output-wrapper">
-                <div id="output-title">
-                    <button onclick="document.getElementById('output').value = ''">Refresh</button>
-                </div>
-                <textarea id="output" readonly></textarea>
+                <!-- <div id="output-title">
+                    <button onclick="document.getElementById('output').innerHTML = ''">Refresh</button>
+                </div> -->
+                <!-- <div id="output"></div> -->
+                <pre>
+Ethereum(1): <a href=https://etherscan.io/>https://etherscan.io/</a>
+Optimism(10): <a href=https://optimistic.etherscan.io/>https://optimistic.etherscan.io/</a>
+BSC(56): <a href=https://bscscan.com/>https://bscscan.com/</a>
+OK(66): <a href=https://www.oklink.com/>https://www.oklink.com/</a>
+Gnosis(100): <a href=https://gnosisscan.io/>https://gnosisscan.io/</a>
+Polygon(137): <a href=https://polygonscan.com/>https://polygonscan.com/</a>
+Sonic(146): <a href=https://sonicscan.org/>https://sonicscan.org/</a>
+Blast(238): <a href=https://blastscan.io/>https://blastscan.io/</a>
+Fantom(250): <a href=https://ftmscan.com/>https://ftmscan.com/</a>
+Fraxtal(252): <a href=https://fraxscan.com/>https://fraxscan.com/</a>
+Filecoin(314): <a href=https://centrifuge.subscan.io/>https://centrifuge.subscan.io/</a>
+ZkSync(324): <a href=https://explorer.zksync.io/>https://explorer.zksync.io/</a>
+PolygonZk(1101): <a href=https://zkevm.polygonscan.com/>https://zkevm.polygonscan.com/</a>
+Moonbeam(1284): <a href=https://moonscan.io/>https://moonscan.io/</a>
+Sei(1329): <a href=https://seitrace.com/>https://seitrace.com/</a>
+Centrifuge(2031): <a href=https://filscan.io/>https://filscan.io/</a>
+Kava(2222): <a href=https://kavascan.com/>https://kavascan.com/</a>
+Mantle(5000): <a href=https://explorer.mantle.xyz/>https://explorer.mantle.xyz/</a>
+Base(8453): <a href=https://basescan.org/>https://basescan.org/</a>
+Immutable(13371): <a href=https://immutascan.io/>https://immutascan.io/</a>
+Arbitrum(42161): <a href=https://arbiscan.io/>https://arbiscan.io/</a>
+Celo(42220): <a href=https://celoscan.io/>https://celoscan.io/</a>
+Avalanche(43114): <a href=https://snowscan.xyz/>https://snowscan.xyz/</a>
+Linea(59144): <a href=https://lineascan.build/>https://lineascan.build/</a>
+Scroll(534352): <a href=https://scrollscan.com/>https://scrollscan.com/</a>
+ZkLinkNova(810180): <a href=https://explorer.zklink.io/>https://explorer.zklink.io/</a>
+Sepolia(11155111): <a href=https://sepolia.etherscan.io/>https://sepolia.etherscan.io/</a>                    
+                </pre>
             </div>
         </div>
     </div>

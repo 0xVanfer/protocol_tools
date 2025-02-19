@@ -17,6 +17,7 @@ const navbarHTML = `
             <span>Tools <span class="nav-arrow">&#9660;</span></span>
             <div class="nav-dropdown-content">
                 <a href="${toHome}tools/checksum.html">Checksum Addr</a>
+                <a href="${toHome}tools/blockscan.html">Blockscan Links</a>
             </div>
         </div>
     </div>
