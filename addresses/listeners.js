@@ -25,7 +25,8 @@ document.getElementById('findAddressBtn').addEventListener('click', async () => 
                 <div>
                     Chain ID: ${chain_id}<br> 
                     Address: <a href="${link}" target="_blank" class="address-link">${address}</a>
-                    <button class="copy-btn" onclick="copyToClipboard('${address}')">Copy Address</button>
+                    <button class="copy-btn" onclick="copyToClipboard(this, '${address}')">Copy Address</button>
+                    <span class="copied">Copied!</span></div>
                     <hr>
                 </div>
             `;
