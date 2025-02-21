@@ -4,8 +4,7 @@ document.getElementById('findAddressBtn').addEventListener('click', async () => 
     setButtonText(button, 'pending...');
     const chainID = document.getElementById('chain_id').value;
     const filters = document.getElementById('filters').value;
-    const linkNeeded = document.getElementById('need_blockscan_links').value === 'true';
-    const url = `https://what.vanfer.tech/list/addresses?chain=${chainID}&link=${linkNeeded}&q=${filters}`
+    const url = `https://what.vanfer.tech/list/addresses?chain=${chainID}&link=true&q=${filters}`
 
     const outputDiv = document.getElementById("output");
     outputDiv.innerHTML = `Reading from: ${url}`; 
