@@ -88,9 +88,10 @@
         <div class="main-content">
             <div class="output-wrapper">
                 <div id="output-title">
-                    <button onclick="document.getElementById('output').value = ''">Refresh</button>
+                    <button onclick="document.getElementById('output').innerHTML = ''">Refresh</button>
                 </div>
-                <textarea id="output" readonly></textarea>
+                <div id="output"></div>
+                <!-- <textarea id="output" readonly></textarea> -->
             </div>
         </div>
     </div>
