@@ -18,6 +18,7 @@ const navbarHTML = `
             <div class="nav-dropdown-content">
                 <a href="${toHome}tools/checksum.html">Checksum Addr</a>
                 <a href="${toHome}tools/blockscan.html">Blockscan Links</a>
+                <a href="${toHome}tools/protocol_links.html">Protocol Links</a>
             </div>
         </div>
     </div>

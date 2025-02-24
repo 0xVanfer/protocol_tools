@@ -6,82 +6,123 @@
     <title>Blockscans</title>
     <link rel="icon" href="https://etherscan.io/images/favicon3.ico" type="image/x-iconsx-icon">
     <script src="../common/params.js" defer></script>
-    <script src="../common/time.js" defer></script>
-    <script src="../common/buttons.js" defer></script>
-    <script src="../common/elememt.js" defer></script>
-    <script src="../common/address.js" defer></script>
 
     <script src="../navbar/navbar.js" defer></script>
     <script src="../common/tag_listener.js" defer></script>
 
     <link rel="stylesheet" href="../navbar/navbar.css">
-    <link rel="stylesheet" href="../common/common.css">
-    <link rel="stylesheet" href="./styles.css">
 
     <style>
-        pre {
-            font-size: 14px; 
-            color: #333; 
-            line-height: 1.5; 
+        body {
+            font-family: Arial, sans-serif;
         }
-        a {
+        .container {
+            width: 80%;
+            margin: 15px auto;
+        }
+        .letter-section {
+            margin-bottom: 12px;
+        }
+        .letter-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 10px;
+            display: inline-block; /* Ensures title and list are in the same line */
+        }
+        .chain-list {
+            display: inline-block; /* Ensures title and list are in the same line */
+            margin: 0;
+        }
+        .chain-item {
+            display: inline-block;
+            margin-right: 10px;
+            text-align: center;
+        }
+        .chain-item a {
             color: blue;
             text-decoration: underline;
         }
-      </style>
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <h1>Blockscan Links</h1>
-            <div class="tag">
-                <div class="tag-header">
-                    <h2>List All</h2>
-                </div>
-                <div class="tag-body">
-                    <button id="listAllBlockscanBtn" class="tag-button">List</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <div class="output-wrapper">
-                <!-- <div id="output-title">
-                    <button onclick="document.getElementById('output').innerHTML = ''">Refresh</button>
-                </div> -->
-                <!-- <div id="output"></div> -->
-                <pre>
-<strong>Arbitrum(42161)</strong>: <a href=https://arbiscan.io/ target="_blank">https://arbiscan.io/</a>
-<strong>Avalanche(43114)</strong>: <a href=https://snowscan.xyz/ target="_blank">https://snowscan.xyz/</a>
-<strong>Base(8453)</strong>: <a href=https://basescan.org/ target="_blank">https://basescan.org/</a>
-<strong>Blast(238)</strong>: <a href=https://blastscan.io/ target="_blank">https://blastscan.io/</a>
-<strong>BSC(56)</strong>: <a href=https://bscscan.com/ target="_blank">https://bscscan.com/</a>
-<strong>Celo(42220)</strong>: <a href=https://celoscan.io/ target="_blank">https://celoscan.io/</a>
-<strong>Centrifuge(2031)</strong>: <a href=https://filscan.io/ target="_blank">https://filscan.io/</a>
-<strong>Ethereum(1)</strong>: <a href=https://etherscan.io/ target="_blank">https://etherscan.io/</a>
-<strong>Fantom(250)</strong>: <a href=https://ftmscan.com/ target="_blank">https://ftmscan.com/</a>
-<strong>Filecoin(314)</strong>: <a href=https://centrifuge.subscan.io/ target="_blank">https://centrifuge.subscan.io/</a>
-<strong>Fraxtal(252)</strong>: <a href=https://fraxscan.com/ target="_blank">https://fraxscan.com/</a>
-<strong>Gnosis(100)</strong>: <a href=https://gnosisscan.io/ target="_blank">https://gnosisscan.io/</a>
-<strong>Immutable(13371)</strong>: <a href=https://immutascan.io/ target="_blank">https://immutascan.io/</a>
-<strong>Kava(2222)</strong>: <a href=https://kavascan.com/ target="_blank">https://kavascan.com/</a>
-<strong>Linea(59144)</strong>: <a href=https://lineascan.build/ target="_blank">https://lineascan.build/</a>
-<strong>Mantle(5000)</strong>: <a href=https://explorer.mantle.xyz/ target="_blank">https://explorer.mantle.xyz/</a>
-<strong>Moonbeam(1284)</strong>: <a href=https://moonscan.io/ target="_blank">https://moonscan.io/</a>
-<strong>OK(66)</strong>: <a href=https://www.oklink.com/ target="_blank">https://www.oklink.com/</a>
-<strong>Optimism(10)</strong>: <a href=https://optimistic.etherscan.io/ target="_blank">https://optimistic.etherscan.io/</a>
-<strong>Polygon(137)</strong>: <a href=https://polygonscan.com/ target="_blank">https://polygonscan.com/</a>
-<strong>PolygonZk(1101)</strong>: <a href=https://zkevm.polygonscan.com/ target="_blank">https://zkevm.polygonscan.com/</a>
-<strong>Scroll(534352)</strong>: <a href=https://scrollscan.com/ target="_blank">https://scrollscan.com/</a>
-<strong>Sei(1329)</strong>: <a href=https://seitrace.com/ target="_blank">https://seitrace.com/</a>
-<strong>Sepolia(11155111)</strong>: <a href=https://sepolia.etherscan.io/ target="_blank">https://sepolia.etherscan.io/</a>                    
-<strong>Sonic(146)</strong>: <a href=https://sonicscan.org/ target="_blank">https://sonicscan.org/</a>
-<strong>Taiko(167000)</strong>: <a href=https://taikoscan.io/ target="_blank">https://taikoscan.io/</a>
-<strong>ZkLinkNova(810180)</strong>: <a href=https://explorer.zklink.io/ target="_blank">https://explorer.zklink.io/</a>
-<strong>ZkSync(324)</strong>: <a href=https://explorer.zksync.io/ target="_blank">https://explorer.zksync.io/</a>
-                </pre>
-            </div>
-        </div>
-    </div>
+    <div class="container" id="chain-container"></div>
+    
+    <script>
+        const chains = [
+            { name: "Arbitrum", url: "https://arbiscan.io/" },
+            { name: "Avalanche", url: "https://snowscan.xyz/" },
+            { name: "Base", url: "https://basescan.org/" },
+            { name: "Blast", url: "https://blastscan.io/" },
+            { name: "BSC", url: "https://bscscan.com/" },
+            { name: "Celo", url: "https://celoscan.io/" },
+            { name: "Centrifuge", url: "https://filscan.io/" },
+            { name: "Ethereum", url: "https://etherscan.io/" },
+            { name: "Fantom", url: "https://ftmscan.com/" },
+            { name: "Filecoin", url: "https://centrifuge.subscan.io/" },
+            { name: "Fraxtal", url: "https://fraxscan.com/" },
+            { name: "Gnosis", url: "https://gnosisscan.io/" },
+            { name: "Immutable", url: "https://immutascan.io/" },
+            { name: "Kava", url: "https://kavascan.com/" },
+            { name: "Linea", url: "https://lineascan.build/" },
+            { name: "Mantle", url: "https://explorer.mantle.xyz/" },
+            { name: "Moonbeam", url: "https://moonscan.io/" },
+            { name: "OK", url: "https://www.oklink.com/" },
+            { name: "Optimism", url: "https://optimistic.etherscan.io/" },
+            { name: "Polygon", url: "https://polygonscan.com/" },
+            { name: "PolygonZk", url: "https://zkevm.polygonscan.com/" },
+            { name: "Scroll", url: "https://scrollscan.com/" },
+            { name: "Sei", url: "https://seitrace.com/" },
+            { name: "Sepolia", url: "https://sepolia.etherscan.io/" },
+            { name: "Sonic", url: "https://sonicscan.org/" },
+            { name: "Taiko", url: "https://taikoscan.io/" },
+            { name: "ZkLinkNova", url: "https://explorer.zklink.io/" },
+            { name: "ZkSync", url: "https://explorer.zksync.io/" }
+        ];
+        
+        function initializeChains() {
+            const sortedChains = chains.sort((a, b) => a.name.localeCompare(b.name));
+            const groupedChains = {};
+            
+            sortedChains.forEach(chain => {
+                const firstLetter = chain.name[0].toUpperCase();
+                if (!groupedChains[firstLetter]) {
+                    groupedChains[firstLetter] = [];
+                }
+                groupedChains[firstLetter].push(chain);
+            });
+            
+            const container = document.getElementById("chain-container");
+            container.innerHTML = "";
+            
+            for (const letter in groupedChains) {
+                const section = document.createElement("div");
+                section.classList.add("letter-section");
+                
+                const title = document.createElement("div");
+                title.classList.add("letter-title");
+                title.textContent = letter;
+                
+                const list = document.createElement("div");
+                list.classList.add("chain-list");
+                
+                groupedChains[letter].forEach(chain => {
+                    const item = document.createElement("div");
+                    item.classList.add("chain-item");
+                    const link = document.createElement("a");
+                    link.href = chain.url;
+                    link.target = "_blank";
+                    link.textContent = chain.name;
+                    item.appendChild(link);
+                    list.appendChild(item);
+                });
+                
+                section.appendChild(title);
+                section.appendChild(list);
+                container.appendChild(section);
+            }
+        }
+        
+        initializeChains();
+    </script>
 </body>
 </html>
