@@ -35,3 +35,21 @@ document.getElementById('getPoolInfoBtn').addEventListener('click', async () => 
         unlockButtons('.tag-button');
     }
 });
+
+document.getElementById('getPendleApiBtn').addEventListener('click', async () => {
+    const button = document.getElementById('getPendleApiBtn');
+    lockButtons('.tag-button');
+    try {
+        setButtonText(button, 'pending...');
+        const chainID = document.getElementById('pendle_api_chain_id').value;
+        const filter = document.getElementById('pendle_api_filter').value;
+        const url =`https://api-v2.pendle.finance/core/v1/${chainID}/markets?order_by=name:1&skip=0&limit=100&is_expired=false&q=${filter}`
+        setElementValueAndScrollDown("output", `New window opened for:\n${url}`);
+        window.open(url, '_blank');
+    } catch (error) {
+        setElementValueAndScrollDown("output", `Error: ${error.message}`);
+    } finally {
+        setButtonText(button, 'Request Api');
+        unlockButtons('.tag-button');
+    }
+});

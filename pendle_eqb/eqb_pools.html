@@ -57,6 +57,34 @@
                     <button id="getPoolInfoBtn" class="tag-button">Get Pool Info</button>
                 </div>
             </div>
+
+            <div class="tag">
+                <div class="tag-header">
+                    <h2>Pendle Api</h2>
+                </div>
+                <div class="tag-body">
+                    <!-- chainID -->
+                    <div class="option">
+                        <label for="pendle_api_chain_id">Chain</label>
+                        <select id="pendle_api_chain_id">
+                            <option value="1">Ethereum(1)</option>
+                            <option value="42161">Arbitrum(42161)</option>
+                            <option value="8453">Base(8453)</option>
+                            <option value="56">BSC(56)</option>
+                            <option value="5000">Mantle(5000)</option>
+                            <option value="10">Optimism(10)</option>
+                            <option value="146">Sonic(146)</option> 
+                        </select>
+                    </div>
+                    <!-- filter -->
+                    <div class="option">
+                        <label for="pendle_api_filter">Filters</label>
+                        <textarea id="pendle_api_filter" class="addresses_input" placeholder="Example: unibtc"></textarea>
+                    </div>
+                    <br>
+                    <button id="getPendleApiBtn" class="tag-button">Request Api</button>
+                </div>
+            </div>
         </div>
 
         <div class="main-content">
