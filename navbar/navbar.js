@@ -4,7 +4,7 @@ const navbarHTML = `
             <span>Protocols <span class="nav-arrow">&#9660;</span></span>
             <div class="nav-dropdown-content">
                 <a href="${toHome}cian_yield_layer/yield_layer.html">Cian Yield Layer</a>
-                <a href="${toHome}pendle_eqb/eqb_pools.html">Equilibria</a>
+                <a href="${toHome}pendle_eqb/eqb_pools.html">Pendle & EQB</a>
             </div>
         </div>
         <div class="nav-item" id="nav-addresses">
