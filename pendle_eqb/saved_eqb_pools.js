@@ -1946,7 +1946,29 @@ const saved_eqb_pools = [
     "pendle_YT": "0x77DE4Be22Ecc633416D79371eF8e861Fb1d2cC39",
     "eqb_token": "0x708561D1F2A1a2bc83260c1C2E15CF4c08514dc4",
     "eqb_reward_pool": "0x887b979144860c575Aef4ffF571a124867284D25"
+  },
+  {
+    "eqb_pid": "177",
+    "pendle_lpt": "0xdFAAB89058dAcA36759Aafa80BebBC6dBf4C2e4e",
+    "pendle_lpt_expiry": "2025-06-26",
+    "sy_symbol": "SY-hgETH",
+    "pendle_SY": "0x378fA6C08C86d76F0C2511A8addd9464d3dfc723",
+    "pendle_PT": "0x0B48a647e55a84D7FE25DACf8cA0ea79BdF4caE5",
+    "pendle_YT": "0x2E0Ca05f9a524f7469A424D3aEBf1B273C05a9D5",
+    "eqb_token": "0xbD9cA06a83f7dfBc5ABAdb951Daa5Cca1fe5A193",
+    "eqb_reward_pool": "0xC8C0D3C8dc76F86b6026Cffe0db96E3853Ae90eb"
+  },
+  {
+    "eqb_pid": "178",
+    "pendle_lpt": "0xEDda7526EC81055F2af99d51D968FC2FBca9Ee96",
+    "pendle_lpt_expiry": "2025-05-22",
+    "sy_symbol": "SY-ctCornuniBTC",
+    "pendle_SY": "0xA424366BcF639628b400D7C0e0607C6B2E2B4E68",
+    "pendle_PT": "0xe9824E10345Ecd5Cd43fC07d550e76159d0327c6",
+    "pendle_YT": "0x5184bCf8b8835B9229bd8291c3370d6001e307e9",
+    "eqb_token": "0x22AA7F1831f289C1f26E5B3B0e71293Aff71fF7a",
+    "eqb_reward_pool": "0x77885f1FB24Dd27E9FE89b263e681cc6Ad4F54dD"
   }
 ];
 
-const saved_eqb_pools_updated_at = 1740800553;
+const saved_eqb_pools_updated_at = 1741762503;
