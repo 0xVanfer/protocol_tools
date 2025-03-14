@@ -1,3 +1,8 @@
+/**
+ * @param {string} chainName - Name of the blockchain (ethereum or arbitrum)
+ * @param {number} timestamp - Unix timestamp in seconds
+ * @returns {Promise<number>} - Block number for the given timestamp
+ */
 async function getBlockNumberByTimestamp(chainName, timestamp) {
     let uri;
     let apiKey;

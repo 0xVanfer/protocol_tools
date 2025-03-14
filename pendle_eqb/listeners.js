@@ -1,3 +1,7 @@
+/**
+ * @dev Event listener for the 'readBtn' button.
+ * Reads and displays EQB pool length information.
+ */
 document.getElementById('readBtn').addEventListener('click', async () => {
     const button = document.getElementById('readBtn');
     lockButtons('.tag-button');
@@ -7,12 +11,17 @@ document.getElementById('readBtn').addEventListener('click', async () => {
         document.getElementById('output').value = `EQB Real Time Pool Length: ${EQBPoolLength}\nEQB Local Pool Length: ${EQBPoolLength_local}\nEQB Local Pool Updated At: ${EQB_pool_local_last_updated} UTC`;
     } catch (error) {
         document.getElementById('output').value = `Error: ${error.message}`;
+        console.error("Error in readBtn listener:", error);
     } finally {
         setButtonText(button, 'Read');
         unlockButtons('.tag-button');
     }
 });
 
+/**
+ * @dev Event listener for the 'getPoolInfoBtn' button.
+ * Retrieves and saves EQB pool information.
+ */
 document.getElementById('getPoolInfoBtn').addEventListener('click', async () => {
     const button = document.getElementById('getPoolInfoBtn');
     lockButtons('.tag-button');
@@ -21,21 +30,26 @@ document.getElementById('getPoolInfoBtn').addEventListener('click', async () => 
         await updateEQBPendleBooster(false);
         const downloadJS = document.getElementById('download_eqb_pools').value === 'js';
         const downloadJSON = document.getElementById('download_eqb_pools').value === 'json';
-        output = await updateEQBPendleDetails(true, true)
+        output = await updateEQBPendleDetails(true, true);
 
         if (downloadJS) {
             saveEQBPoolsResultAsJSFile(output);
-        }else if (downloadJSON){
+        } else if (downloadJSON) {
             saveEQBPoolsResultAsJSONFile(output);
         }
     } catch (error) {
         setElementValueAndScrollDown("output", `Error: ${error.message}`);
+        console.error("Error in getPoolInfoBtn listener:", error);
     } finally {
         setButtonText(button, 'Get Pool Info');
         unlockButtons('.tag-button');
     }
 });
 
+/**
+ * @dev Event listener for the 'getPendleApiBtn' button.
+ * Opens a new window with the Pendle API URL.
+ */
 document.getElementById('getPendleApiBtn').addEventListener('click', async () => {
     const button = document.getElementById('getPendleApiBtn');
     lockButtons('.tag-button');
@@ -48,6 +62,7 @@ document.getElementById('getPendleApiBtn').addEventListener('click', async () =>
         window.open(url, '_blank');
     } catch (error) {
         setElementValueAndScrollDown("output", `Error: ${error.message}`);
+        console.error("Error in getPendleApiBtn listener:", error);
     } finally {
         setButtonText(button, 'Request Api');
         unlockButtons('.tag-button');

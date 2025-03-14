@@ -6,84 +6,85 @@ const vaultInfoCache = new Map();
 
 async function getVaultContractByAddress(chainName, vaultAddress){
     if (vaultContractCache.has(vaultAddress)) {
-        const vault = vaultContractCache.get(vaultAddress);
-        return vault;
-    } else {
-        const RPC = await getRPCByChainName(chainName)
-        if (RPC === undefined){
-            return undefined;
-        }
-
-        if (vaultAddress === "0x3498fDed9C88Ae83b3BC6a302108F2da408e613b"){
-            const vault = new ethers.Contract(vaultAddress, abi_yl_eco_earn, RPC); 
-            vaultContractCache.set(vaultAddress, vault);
-            return vault;           
-        }
-        
-        const vault = new ethers.Contract(vaultAddress, abi_yl_common_vault, RPC);
-        vaultContractCache.set(vaultAddress, vault);
-        return vault;
+        return vaultContractCache.get(vaultAddress);
     }
+
+    const RPC = await getRPCByChainName(chainName);
+    if (!RPC) {
+        return undefined;
+    }
+
+    let abi = abi_yl_common_vault;
+    if (vaultAddress === "0x3498fDed9C88Ae83b3BC6a302108F2da408e613b") {
+        abi = abi_yl_eco_earn;
+    }
+
+    const vault = new ethers.Contract(vaultAddress, abi, RPC);
+    vaultContractCache.set(vaultAddress, vault);
+    return vault;
 }
 
 async function getVaultInfoByAddress(chainName, vaultAddress){
     if (vaultInfoCache.has(vaultAddress)) {
-        const vaultInfo = vaultInfoCache.get(vaultAddress);
-        return vaultInfo;
-    } else {
-        const RPC = await getRPCByChainName(chainName)
-        if (RPC === undefined){
-            return undefined;
-        }
-        const vault = await getVaultContractByAddress(chainName, vaultAddress);
-        if (vault === undefined){
-            return undefined;
-        }
-        const newVaultInfo = new Map();
+        return vaultInfoCache.get(vaultAddress);
+    }
 
-        if (vaultAddress === "0x3498fDed9C88Ae83b3BC6a302108F2da408e613b"){
-            const decimals = await vault.decimals();
-            const symbol = await vault.symbol();
-            const asset = await vault.asset();
-            const redeemOperatorAddress =  await vault.redeemOperator();
-            const lpPrice = ethers.utils.formatUnits((await vault.exchangePrice()),decimals);
-            const redeemOperator = new ethers.Contract(redeemOperatorAddress, abi_yl_redeem_operator, RPC);
+    const RPC = await getRPCByChainName(chainName);
+    if (!RPC) {
+        return undefined;
+    }
 
-            newVaultInfo.set("underlying", asset);
-            newVaultInfo.set("symbol", symbol);
-            newVaultInfo.set("decimals", decimals);
+    const vault = await getVaultContractByAddress(chainName, vaultAddress);
+    if (!vault) {
+        return undefined;
+    }
+
+    const newVaultInfo = new Map();
+    let decimals, underlying, symbol, redeemOperatorAddress, redeemOperator;
+
+    try {
+        if (vaultAddress === "0x3498fDed9C88Ae83b3BC6a302108F2da408e613b") {
+            decimals = await vault.decimals();
+            symbol = await vault.symbol();
+            underlying = await vault.asset();
+            redeemOperatorAddress = await vault.redeemOperator();
+            const lpPrice = ethers.utils.formatUnits((await vault.exchangePrice()), decimals);
+            redeemOperator = new ethers.Contract(redeemOperatorAddress, abi_yl_redeem_operator, RPC);
+
             newVaultInfo.set("revenueRate", 0.1);
             newVaultInfo.set("exitFeeRate", 0);
             newVaultInfo.set("lpPrice", lpPrice);
-            newVaultInfo.set("redeem_operator_address", redeemOperatorAddress);
-            newVaultInfo.set("redeem_operator", redeemOperator);
-
-            vaultInfoCache.set(vaultAddress, newVaultInfo);
-            return newVaultInfo;           
-        }
-
-        const decimals = await vault.decimals();
-        const vaultParams = await vault.getVaultParams();
-        const lpPrice = ethers.utils.formatUnits((await vault.exchangePrice()),decimals);
-
-        newVaultInfo.set("underlying", vaultParams.underlyingToken);
-        newVaultInfo.set("symbol", vaultParams.symbol);
-        newVaultInfo.set("decimals", decimals);
-        newVaultInfo.set("revenueRate", ethers.utils.formatUnits(vaultParams.revenueRate, 4));
-        newVaultInfo.set("exitFeeRate", ethers.utils.formatUnits(vaultParams.exitFeeRate, 4));
-        newVaultInfo.set("lpPrice", lpPrice);
-
-        let redeemOperator;
-        if (vaultAddress === "0xB13aa2d0345b0439b064f26B82D8dCf3f508775d") {
-            redeemOperator = new ethers.Contract(vaultParams.redeemOperator, abi_yl_redeem_operator_steth, RPC);
         } else {
-            redeemOperator = new ethers.Contract(vaultParams.redeemOperator, abi_yl_redeem_operator, RPC);
+            decimals = await vault.decimals();
+            const vaultParams = await vault.getVaultParams();
+            underlying = vaultParams.underlyingToken;
+            symbol = vaultParams.symbol;
+            redeemOperatorAddress = vaultParams.redeemOperator;
+            const lpPrice = ethers.utils.formatUnits((await vault.exchangePrice()), decimals);
+
+            newVaultInfo.set("revenueRate", ethers.utils.formatUnits(vaultParams.revenueRate, 4));
+            newVaultInfo.set("exitFeeRate", ethers.utils.formatUnits(vaultParams.exitFeeRate, 4));
+            newVaultInfo.set("lpPrice", lpPrice);
+
+            let redeemOperatorABI = abi_yl_redeem_operator;
+            if (vaultAddress === "0xB13aa2d0345b0439b064f26B82D8dCf3f508775d") {
+                redeemOperatorABI = abi_yl_redeem_operator_steth;
+            }
+            redeemOperator = new ethers.Contract(redeemOperatorAddress, redeemOperatorABI, RPC);
         }
-        newVaultInfo.set("redeem_operator_address", vaultParams.redeemOperator);
+
+        newVaultInfo.set("underlying", underlying);
+        newVaultInfo.set("symbol", symbol);
+        newVaultInfo.set("decimals", decimals);
+        newVaultInfo.set("redeem_operator_address", redeemOperatorAddress);
         newVaultInfo.set("redeem_operator", redeemOperator);
 
         vaultInfoCache.set(vaultAddress, newVaultInfo);
         return newVaultInfo;
+
+    } catch (error) {
+        console.error(`Error fetching vault info for ${vaultAddress}:`, error);
+        return undefined;
     }
 }
 

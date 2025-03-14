@@ -16,6 +16,7 @@ async function fetchVaults(network) {
 
 async function initializeMappings() {
     lockButtons('.tag-button');
+    setElementValueAndScrollDown("output", `Fetching Vaults List...`);
     for (const network of networks) {
         setElementValueAndScrollDown("output", `Fetching ${network} Vaults List...`);
         await fetchVaults(network);
@@ -26,20 +27,19 @@ async function initializeMappings() {
     populateDropdown("blockchain_pending_withdrawals", "vaultName_pending_withdrawals")
     populateDropdown("blockchain_user_history", "vaultName_user_history")
 
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split('T')[0];
-    document.getElementById('start_date_user_history').value = formattedDate;
-    document.getElementById('end_date_user_history').value = formattedDate;
-
+    // set the default date to today
+    setDefaultDate();
 
     setElementValueAndScrollDown("output", ``);
     unlockButtons('.tag-button');
 }
 
+function setDefaultDate(){
    const currentDate = new Date();
    const formattedDate = currentDate.toISOString().split('T')[0];
    document.getElementById('start_date_user_history').value = formattedDate;
-
+   document.getElementById('end_date_user_history').value = formattedDate;
+}
 
 function populateDropdown(chainSelectID, vaultSelectID) {
     const blockchainSelect = document.getElementById(chainSelectID);

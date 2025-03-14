@@ -1,3 +1,7 @@
+/**
+ * @param {number} timestamp - Unix timestamp in seconds
+ * @returns {string} - Formatted date and time string in UTC
+ */
 function formatDateTime(timestamp) {
     const date = new Date(timestamp * 1000);
     const year = date.getUTCFullYear();
@@ -9,6 +13,10 @@ function formatDateTime(timestamp) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+/**
+ * @param {number} timestamp - Unix timestamp in seconds
+ * @returns {string} - Formatted date string in UTC
+ */
 function formatDateOnly(timestamp){
     const date = new Date(timestamp * 1000);
     const year = date.getUTCFullYear();

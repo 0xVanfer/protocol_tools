@@ -1,0 +1,56 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fb; /* common.css background */
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px 10px; /* reduce left and right padding by half */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.letter-section {
+    margin-bottom: 12px; /* slightly shorten line spacing */
+}
+
+.letter-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #495057; /* a bit darker than common.css h2 */
+    margin-bottom: 5px;
+    display: block;
+}
+
+.chain-list {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chain-item {
+    display: inline-block;
+    text-align: center;
+    background-color: #e9ecef;
+    padding: 5px 12px; /* slightly shorten top and bottom padding */
+    border-radius: 5px;
+}
+
+.chain-item a {
+    color: #007bff; /* common.css link color */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.chain-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}

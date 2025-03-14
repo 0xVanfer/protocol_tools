@@ -1,3 +1,9 @@
+const handleVaultInfoError = (button, message) => {
+    setElementValueAndScrollDown("output", message);
+    unlockButtons('.tag-button');
+    setButtonText(button, button.textContent.replace('pending...', '').trim());
+};
+
 document.getElementById('getHistory_history_csv').addEventListener('click', async () => {
     const button = document.getElementById('getHistory_history_csv');
     lockButtons('.tag-button');
@@ -54,65 +60,49 @@ document.getElementById('get_pending_withdrawals').addEventListener('click', asy
     setButtonText(button, 'pending...');
     const blockchain = document.getElementById('blockchain_pending_withdrawals').value;
     const vaultAddress = document.getElementById('vaultName_pending_withdrawals').value;
-    // const vaultName = document.getElementById('vaultName_pending_withdrawals').selectedOptions[0].textContent.split(' (')[0]; // Get pool name
 
     setElementValueAndScrollDown("output", `Reading from onchain...`);
 
     try {
-        let users = [];
-        const vaultInfo = await getVaultInfoByAddress(blockchain, vaultAddress)
-        if (vaultInfo === undefined){
-            setElementValueAndScrollDown("output", `Get vault info error.`);
-            unlockButtons('.tag-button');
-            setButtonText(button, 'Get Vault Pending Withdrawals');
-            return;
+        const vaultInfo = await getVaultInfoByAddress(blockchain, vaultAddress);
+        if (!vaultInfo) {
+            return handleVaultInfoError(button, "Get vault info error.");
         }
-   
+
         const redeemOperator = vaultInfo.get("redeem_operator");
         const redeemOperatorAddress = vaultInfo.get("redeem_operator_address");
-        if (redeemOperatorAddress === ADDRESS_ZERO){
-            setElementValueAndScrollDown("output", `Cannot withdraw (?).`);
-            unlockButtons('.tag-button');
-            setButtonText(button, 'Get Vault Pending Withdrawals');
-            return;
+        if (redeemOperatorAddress === ADDRESS_ZERO) {
+            return handleVaultInfoError(button, "Cannot withdraw (?).");
         }
 
+        let pendingUsers, allUsersShares;
         if (vaultAddress === "0xB13aa2d0345b0439b064f26B82D8dCf3f508775d") {
             [pendingUsers, notUsedeETHUsers] = await redeemOperator.allPendingWithdrawers();
-            if (pendingUsers.length === 0){
-                setElementValueAndScrollDown("output", `No pending users.`);
-                unlockButtons('.tag-button');
-                setButtonText(button, 'Get Vault Pending Withdrawals');
-                return;
-            }
-            allUsersShares = await redeemOperator.withdrawalRequests(pendingUsers);
         } else {
             pendingUsers = await redeemOperator.allPendingWithdrawers();
-            if (pendingUsers.length === 0){
-                setElementValueAndScrollDown("output", `No pending users.`);
-                unlockButtons('.tag-button');
-                setButtonText(button, 'Get Vault Pending Withdrawals');
-                return;
-            }
-            allUsersShares = await redeemOperator.withdrawalRequests(pendingUsers);
         }
 
+        if (!pendingUsers || pendingUsers.length === 0) {
+            return handleVaultInfoError(button, "No pending users.");
+        }
+
+        allUsersShares = await redeemOperator.withdrawalRequests(pendingUsers);
+
         let sharesSum = 0;
+        let users = [];
         for (let i = 0; i < allUsersShares.length; i++) {
             const user = pendingUsers[i];
             const userShares = ethers.utils.formatUnits(allUsersShares[i], vaultInfo.get("decimals"));
-            users.push({user: user, shares: userShares});
+            users.push({ user: user, shares: userShares });
             sharesSum += Number(userShares);
         }
 
-        // setElementValueAndScrollDown("output", JSON.stringify(users, null, 2));
-
-        let table  = `User                                        | Shares (total = ${sharesSum})\n`;
-        table += "--------------------------------------------|--------------------\n";  
+        let table = `User                                        | Shares (total = ${sharesSum})\n`;
+        table += "--------------------------------------------|--------------------\n";
 
         users.forEach(userData => {
-            const user = userData.user.padEnd(44, ' '); 
-            const shares = userData.shares.toString().padStart(8, ' ');  
+            const user = userData.user.padEnd(44, ' ');
+            const shares = userData.shares.toString().padStart(8, ' ');
             table += `${user}| ${shares}\n`;
         });
 
@@ -178,9 +168,9 @@ document.getElementById('get_user_history').addEventListener('click', async () =
     let startTimestamp = 0;
     let endTimestamp = 0;
 
-    if (startDate) startTimestamp=Math.floor(new Date(startDate).getTime() / 1000);;
-    if (endDate) endTimestamp=Math.floor(new Date(endDate).getTime() / 1000);
-    if (startDate >= endDate){
+    if (startDate) startTimestamp = Math.floor(new Date(startDate).getTime() / 1000);;
+    if (endDate) endTimestamp = Math.floor(new Date(endDate).getTime() / 1000);
+    if (startDate >= endDate) {
         setElementValueAndScrollDown("output", `Failed: start date >= end date`);
         unlockButtons('.tag-button');
         setButtonText(button, 'Get User History Info');
@@ -190,47 +180,39 @@ document.getElementById('get_user_history').addEventListener('click', async () =
     setElementValueAndScrollDown("output", `Reading from onchain...`);
 
     try {
-        let output = "";
-        let res = [];
-        const vaultContract = await getVaultContractByAddress(blockchain, vaultAddress)
-        if (vaultContract === undefined){
-            setElementValueAndScrollDown("output", `Get vault contract error.`);
-            unlockButtons('.tag-button');
-            setButtonText(button, 'Get User History Info');
-            return;
+        const vaultContract = await getVaultContractByAddress(blockchain, vaultAddress);
+        if (!vaultContract) {
+            return handleVaultInfoError(button, "Get vault contract error.");
         }
 
-        const vaultInfo = await getVaultInfoByAddress(blockchain, vaultAddress)
-        if (vaultInfo === undefined){
-            setElementValueAndScrollDown("output", `Get vault info error.`);
-            unlockButtons('.tag-button');
-            setButtonText(button, 'Get User History Info');
-            return;
+        const vaultInfo = await getVaultInfoByAddress(blockchain, vaultAddress);
+        if (!vaultInfo) {
+            return handleVaultInfoError(button, "Get vault info error.");
         }
 
         const decimals = vaultInfo.get("decimals");
+        let res = [];
 
-        for (let timestamp = startTimestamp; timestamp < endTimestamp; timestamp += 86400){
-            const blockNum = await getBlockNumberByTimestamp(blockchain, timestamp)
-            if (blockNum === 0){
+        for (let timestamp = startTimestamp; timestamp < endTimestamp; timestamp += 86400) {
+            const blockNum = await getBlockNumberByTimestamp(blockchain, timestamp);
+            if (blockNum === 0) {
                 continue;
             }
-            // output += `timestamp: ${timestamp}; blockNum: ${blockNum}\n`
-            const balanceBig = await vaultContract.balanceOf(userAddress, {blockTag: Number(blockNum)})
-            const totalSupplyBig = await vaultContract.totalSupply( {blockTag: Number(blockNum)})
+            const balanceBig = await vaultContract.balanceOf(userAddress, { blockTag: Number(blockNum) });
+            const totalSupplyBig = await vaultContract.totalSupply({ blockTag: Number(blockNum) });
             const balance = ethers.utils.formatUnits(balanceBig, decimals);
             const totalSupply = ethers.utils.formatUnits(totalSupplyBig, decimals);
             res.push({
-                "timestamp":timestamp, 
-                "date":new Date(timestamp*1000).toISOString().split('T')[0],
-                "shares":balance,
-                "total supply":totalSupply,
-                "weight":(balance / totalSupply).toFixed(8),
-            })
+                "timestamp": timestamp,
+                "date": new Date(timestamp * 1000).toISOString().split('T')[0],
+                "shares": balance,
+                "total supply": totalSupply,
+                "weight": (balance / totalSupply).toFixed(8),
+            });
             setElementValueAndScrollDown("output", JSON.stringify(res, null, 2));
         }
 
-        if(downloadCsv)downloadJsonToCsv(res,`user_history_shares_${vaultName}_${userAddress}_${startDate}_${endDate}.csv`)
+        if (downloadCsv) downloadJsonToCsv(res, `user_history_shares_${vaultName}_${userAddress}_${startDate}_${endDate}.csv`)
         return;
 
     } catch (error) {

@@ -1,3 +1,4 @@
+/* Button styles */
 button{
     background-color: #4CAF50;
     color: white;
@@ -12,6 +13,7 @@ button:hover {
     background-color: #45a049;
 }
 
+/* Container for the layout */
 .container {
     display: flex;
     flex-direction: row;
@@ -19,6 +21,7 @@ button:hover {
     height: calc(100vh - 40px);
 }
 
+/* Sidebar styles */
 .sidebar {
     width: 25%;
     background-color: #fff;
@@ -31,6 +34,7 @@ button:hover {
     height: 100%;
 }
 
+/* Tag styles */
 .tag {
     margin-bottom: 10px;
     border: 1px solid #ddd;
@@ -39,6 +43,7 @@ button:hover {
     transition: all 0.3s ease-in-out;
 }
 
+/* Tag header styles */
 .tag-header {
     background-color: #f4f7fb;
     padding: 12px;
@@ -50,6 +55,7 @@ button:hover {
     font-size: 16px;
 }
 
+/* Tag body styles */
 .tag-body {
     padding: 10px;
     display: none;
@@ -57,11 +63,13 @@ button:hover {
     height: 0;
 }
 
+/* Active tag styles */
 .tag.active .tag-body {
     display: block;
     height: auto;
 }
 
+/* Tag button styles */
 .tag-button {
     width: 100%;
     border: none;
@@ -70,6 +78,7 @@ button:hover {
     font-size: 16px;
 }
 
+/* Main content styles */
 .main-content {
     width: 75%;
     background-color: #fff;
@@ -80,11 +89,13 @@ button:hover {
     height: 100%;
 }
 
+/* Output wrapper styles */
 .output-wrapper {
     margin-top: 2px;
     flex: 1;
 }
 
+/* Output title styles */
 #output-title {
     display: flex;
     justify-content: flex-end;
@@ -95,6 +106,7 @@ button:hover {
     z-index: 1;
 }
 
+/* Textarea styles */
 textarea {
     font-family: 'Courier New', monospace;
     font-size: 15px;
@@ -108,6 +120,7 @@ textarea {
     border: 0px solid #ccc;
 }
 
+/* Select styles */
 select {
     background-color: #f4f7fb;
     border: 1px solid #ddd;
@@ -130,6 +143,7 @@ select:focus {
     background-color: #fff;
 }
 
+/* Option styles */
 option {
     padding: 8px 12px;
     background-color: #fff;
@@ -140,6 +154,7 @@ option:hover {
     background-color: #f0f0f0;
 }
 
+/* Copy button styles */
 .copy-btn {
     padding: 5px 10px;
     font-size: 12px;
@@ -160,30 +175,36 @@ option:hover {
     visibility: hidden;
 }
 
+/* Output container styles */
 #output-container {
     flex: 0 0 70%;
     padding: 0 20px;
     overflow-y: auto;
 }
 
+/* Result styles */
 .result {
     font-size: 15px;
     margin: 5px 0;
 }
 
+/* Horizontal rule styles */
 hr {
     margin: 10px 0;
     border: 1px solid #ccc;
 }
 
+/* Address styles */
 .address {
     font-family: monospace;
 }
 
+/* Empty line styles */
 .empty-line {
     height: 10px;
 }
 
+/* Addresses input styles */
 .addresses_input {
     padding: 10px;
     font-size: 14px;
@@ -196,6 +217,7 @@ hr {
     overflow-y: auto;
 }
 
+/* Link styles */
 a {
     color: blue;
     text-decoration: underline;

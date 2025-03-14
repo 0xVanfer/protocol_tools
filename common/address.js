@@ -1,35 +1,39 @@
+/**
+ * @param {string} address - Address to validate
+ * @returns {boolean} - True if the address is a valid Ethereum address, false otherwise
+ */
+// Function to validate Ethereum address
 function isValidEthereumAddress(address) {
     return /^0x[a-fA-F0-9]{40}$/.test(address);
 }
 
-async function toChecksumAddress(address) {
+/**
+ * @param {string} address - Address to convert to checksummed address
+ * @returns {string} - Checksummed address
+ */
+function toChecksumAddress(address) {
     return ethers.utils.getAddress(address);
 }
 
+/**
+ * @param {string} input - Input string to search for addresses
+ * @returns {Array<string>} - Array of checksummed addresses found in the input string
+ */
 async function findAddressesAndChecksum(input){
     const addresses = [];
     let start = 0;
 
     while ((start = input.indexOf("0x", start)) !== -1) {
-        const end = input.indexOf("0x", start + 2);
-        let address = '';
+        let address = input.substring(start, start + 42);
 
-        if (end !== -1) {
-            address = input.substring(start, end);
-        } else {
-            address = input.substring(start);
-        }
-
-        if (address.length >= 42) {
-            address = address.slice(0, 42);
-        } else if (address.length < 42) {
+        if (address.length < 42) {
             start += 2;
             continue;
         }
 
         let checksummed = "";
         try {
-            checksummed = await toChecksumAddress(address);
+            checksummed = toChecksumAddress(address);
         } catch (error) {
             start += 2;
             continue;
