@@ -5,8 +5,8 @@ let toHome = "../"
 const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000';
 
 // Default RPC endpoints
-const DEFAULT_RPC_ETHEREUM = "https://rpc.ankr.com/eth";
-const DEFAULT_RPC_ARBITRUM = "https://rpc.ankr.com/arbitrum";
+const DEFAULT_RPC_ETHEREUM = "https://eth.meowrpc.com";
+const DEFAULT_RPC_ARBITRUM = "https://arbitrum.meowrpc.com";
     
 // RPC providers
 let RPC_PROVIDER_ETH = new ethers.providers.JsonRpcProvider(DEFAULT_RPC_ETHEREUM);
