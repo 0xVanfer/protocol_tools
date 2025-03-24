@@ -1968,7 +1968,18 @@ const saved_eqb_pools = [
     "pendle_YT": "0x5184bCf8b8835B9229bd8291c3370d6001e307e9",
     "eqb_token": "0x22AA7F1831f289C1f26E5B3B0e71293Aff71fF7a",
     "eqb_reward_pool": "0x77885f1FB24Dd27E9FE89b263e681cc6Ad4F54dD"
+  },
+  {
+    "eqb_pid": "179",
+    "pendle_lpt": "0x09fA04Aac9c6d1c6131352EE950CD67ecC6d4fB9",
+    "pendle_lpt_expiry": "2025-09-25",
+    "sy_symbol": "SY wstUSR",
+    "pendle_SY": "0x6c78661c00D797C9c7fCBE4BCacbD9612A61C07f",
+    "pendle_PT": "0x23E60d1488525bf4685f53b3aa8E676c30321066",
+    "pendle_YT": "0x1E24B022329f3CA0083b12FAF75d19639FAebF6f",
+    "eqb_token": "0x006C2479E2417d7266EE16B95406d0627D163fA0",
+    "eqb_reward_pool": "0x7890d3806b60Eb1aaBEA51B084863f539880Cebd"
   }
 ];
 
-const saved_eqb_pools_updated_at = 1741762503;
+const saved_eqb_pools_updated_at = 1742787931;
