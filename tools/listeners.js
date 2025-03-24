@@ -7,7 +7,7 @@ document.getElementById('convertAddressesBtn').addEventListener('click', async (
     const outputElement = document.getElementById('output');
     const addresses = await findAddressesAndChecksum(input);
 
-    outputElement.innerHTML = '<hr>';
+    outputElement.innerHTML += '<hr>';
 
     addresses.forEach(addr => {
         const lowercaseAddress = addr.toLowerCase();
