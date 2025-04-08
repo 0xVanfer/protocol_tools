@@ -16,6 +16,7 @@ const blockscans = [
     { name: "Kava (2222)", url: "https://kavascan.com/" },
     { name: "Linea (59114)", url: "https://lineascan.build/" },
     { name: "Mantle (5000)", url: "https://explorer.mantle.xyz/" },
+    { name:"Merlin (4200)", url:"https://scan.merlinchain.io/" },
     { name: "Mode (34443)", url: "https://modescan.io/address/" },
     { name: "Moonbeam (1284)", url: "https://moonscan.io/" },
     { name: "OK (66)", url: "https://www.oklink.com/" },

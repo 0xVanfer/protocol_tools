@@ -26,6 +26,7 @@ const protocols = [
     { name: "Circle", url: "https://www.circle.com/" },
     { name: "Coinbase", url: "https://www.coinbase.com/home" },
     { name: "Compound", url: "https://app.compound.finance/markets" },
+    { name: "Concrete", url: "https://www.concrete.xyz/" },
     { name: "Convex", url: "https://www.convexfinance.com/" },
     { name: "Corn", url: "https://usecorn.com/" },
     { name: "Curve", url: "https://curve.fi/" },
