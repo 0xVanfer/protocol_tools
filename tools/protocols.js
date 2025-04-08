@@ -58,6 +58,7 @@ const protocols = [
     { name: "Maple", url: "https://maple.finance/" },
     { name: "Maverick", url: "https://www.mav.xyz/" },
     { name: "Mellow", url: "https://app.mellow.finance/vaults" },
+    { name: "Merlin (chain)", url: "https://merlinchain.io/" },
     { name: "Morpho", url: "https://app.morpho.org/" },
     { name: "OneInch", url: "https://1inch.io/" },
     { name: "P2P", url: "https://p2p.org/" },
