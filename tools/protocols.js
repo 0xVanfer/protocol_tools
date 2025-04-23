@@ -20,6 +20,7 @@ const protocols = [
     { name: "Benqi", url: "https://benqi.fi/" },
     { name: "Binance", url: "https://binance.com/" },
     { name: "BiSwap", url: "https://biswap.org/" },
+    { name: "BitFi", url: "https://bitfi.one/" },
     { name: "Chainlink", url: "https://chain.link/" },
     { name: "Chorusone", url: "https://chorus.one/" },
     { name: "Cian", url: "https://cian.app/" },

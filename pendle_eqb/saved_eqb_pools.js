@@ -2111,7 +2111,95 @@ const saved_eqb_pools = [
     "pendle_YT": "0xC0a710eec830747339FDb45522D47782F598CCEe",
     "eqb_token": "0xc48D385BBd11cBF3a8c5b2bE92B65BaffeE332bb",
     "eqb_reward_pool": "0x130Bb9a250fCF74Bb6E4Cf6B7E8c584D51f72416"
+  },
+  {
+    "eqb_pid": "192",
+    "pendle_lpt": "0x9bc2fb257e00468fE921635fe5a73271F385d0EB",
+    "pendle_lpt_expiry": "2025-10-30",
+    "sy_symbol": "SY-fxSAVE",
+    "pendle_SY": "0x13945B761B2Ed3219A497a46D15a8923f418d2ab",
+    "pendle_PT": "0x21aacE56a8F21210b7E76d8eF1a77253Db85BF0a",
+    "pendle_YT": "0x3787c19c32e727310708C0693AEC00Fb37a01E7b",
+    "eqb_token": "0x80919DB08184330136d7f0972B4A9eefB5228503",
+    "eqb_reward_pool": "0xC296407376629ef5831Da4773392971469BA369A"
+  },
+  {
+    "eqb_pid": "193",
+    "pendle_lpt": "0x88C4F34B86907b7221c0061f7a0bBeC9391Ea727",
+    "pendle_lpt_expiry": "2025-07-31",
+    "sy_symbol": "SY-RUSD",
+    "pendle_SY": "0x43D6651FF941776976aE8e5B11Ef513E054A7931",
+    "pendle_PT": "0xf736acF34FF7Cd9B3565b73a1f15E652859bF322",
+    "pendle_YT": "0x050960D2438D151A246625916b64626f49A1Bc0a",
+    "eqb_token": "0xAb376FCF5eEaF792afecD4AdBB65aBC7928Fe740",
+    "eqb_reward_pool": "0xB8d9D48ac98b279be76921E0996618a08Bf4B09C"
+  },
+  {
+    "eqb_pid": "194",
+    "pendle_lpt": "0x45F163E583D34b8E276445dd3Da9aE077D137d72",
+    "pendle_lpt_expiry": "2025-09-25",
+    "sy_symbol": "SY-sUSDf",
+    "pendle_SY": "0xa780d7F775B4eFf6846A8c28981f086bC6a7d637",
+    "pendle_PT": "0xAB365C0879024481E4ad3b47bd6FeA9c10014FbC",
+    "pendle_YT": "0xFF1e55f96fA77bcFb5d40f6641E0AcaBd47AC34F",
+    "eqb_token": "0xf21dF3163777e888df9996911A1b3Ab7E951cb98",
+    "eqb_reward_pool": "0x881acc0266e025Ae346f7613dEB34907532DB40e"
+  },
+  {
+    "eqb_pid": "195",
+    "pendle_lpt": "0xC88FF954d42d3e11D43B62523B3357847C29377c",
+    "pendle_lpt_expiry": "2025-09-25",
+    "sy_symbol": "SY-slvlUSD",
+    "pendle_SY": "0x0a9B2C09F8756c743B0702973ed33970d16cF6f9",
+    "pendle_PT": "0x2CA5f2C4300450D53214B00546795c1c07B89acB",
+    "pendle_YT": "0x47247749E976c54c6DB2A9dB68c5caDb05482E9F",
+    "eqb_token": "0xA8D4C037919101C1781828359A524A34D0F61687",
+    "eqb_reward_pool": "0x28C40B047856BEcA0B5e9F23625FC55006d174C5"
+  },
+  {
+    "eqb_pid": "196",
+    "pendle_lpt": "0xE6723992EC43aa6011457bBBed7D6Cd7Db1407B6",
+    "pendle_lpt_expiry": "2025-10-09",
+    "sy_symbol": "SY-sDOLA",
+    "pendle_SY": "0x90a7E3396403634942AcC24906FBdA19f1418A41",
+    "pendle_PT": "0x8891302D91dB6E7C2Ce6e82A8f6C952aB556eb7a",
+    "pendle_YT": "0xBb606D98F9723Cb58F5c4ac1768DA2543F1B49D8",
+    "eqb_token": "0xa1c791127e3c59F0e06A40FA282eb531AA5b8392",
+    "eqb_reward_pool": "0xD1Db261a3cBFB83bCB6A3B64148B916152550EA4"
+  },
+  {
+    "eqb_pid": "197",
+    "pendle_lpt": "0x461bc2ac3f80801BC11B0F20d63B73feF60C8076",
+    "pendle_lpt_expiry": "2025-09-25",
+    "sy_symbol": "SY-lvlUSD",
+    "pendle_SY": "0x14Ff57675c9c34EEb9E1516fFda7cAC6Ed1B9748",
+    "pendle_PT": "0x207F7205fd6c4b602Fa792C8b2B60e6006D4a0b8",
+    "pendle_YT": "0x946934554a2Bf59039661f971986F0223E906264",
+    "eqb_token": "0xa4356964bbDc35c06Cddf2f1918a7dB5b325F69A",
+    "eqb_reward_pool": "0x7C13f5c5A28B150de5dC96b47c75067569eBeE0D"
+  },
+  {
+    "eqb_pid": "198",
+    "pendle_lpt": "0x08bF93c8F85977c64069Dd34C5da7b1c636E104f",
+    "pendle_lpt_expiry": "2025-07-31",
+    "sy_symbol": "SY-csUSDL",
+    "pendle_SY": "0x8077b6f34e9193D5bbb0eF06A73119060534d130",
+    "pendle_PT": "0xf10A134A987E22ffa9463570A6D1eb92a63Fc178",
+    "pendle_YT": "0x1b85471da5bD63cBE80bDFEA1E45B6a0215E2a54",
+    "eqb_token": "0x45688357cD49Ef475FB3a9c8455B20840ca3f046",
+    "eqb_reward_pool": "0x40b9B6628eEC5AD3A88c632De77Be48Fb93c0376"
+  },
+  {
+    "eqb_pid": "199",
+    "pendle_lpt": "0xab39fb8E28Def89e5df77c2788a811d881D7fC8E",
+    "pendle_lpt_expiry": "2025-08-28",
+    "sy_symbol": "SY-sUSDa",
+    "pendle_SY": "0x8946f653aeD1af1F82a8dE6d7F54088afFf5A14e",
+    "pendle_PT": "0x93c903299C22C4c226944Bf8ba3DaF8F6a94E435",
+    "pendle_YT": "0x9408BeeA2c4c1B7bfeFA04874f79cBB9c147e7Ae",
+    "eqb_token": "0x8ee712C28be2324517582e1d09Cd6480Efdb1680",
+    "eqb_reward_pool": "0x0a7A705983C422ED8564FCcb06Ce9c901384212D"
   }
 ];
 
-const saved_eqb_pools_updated_at = 1744682662;
+const saved_eqb_pools_updated_at = 1745392495;
