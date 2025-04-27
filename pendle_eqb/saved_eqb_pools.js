@@ -2199,7 +2199,29 @@ const saved_eqb_pools = [
     "pendle_YT": "0x9408BeeA2c4c1B7bfeFA04874f79cBB9c147e7Ae",
     "eqb_token": "0x8ee712C28be2324517582e1d09Cd6480Efdb1680",
     "eqb_reward_pool": "0x0a7A705983C422ED8564FCcb06Ce9c901384212D"
+  },
+  {
+    "eqb_pid": "200",
+    "pendle_lpt": "0x266728b30c98B24De810E3325aDC615486988Cb2",
+    "pendle_lpt_expiry": "2025-07-31",
+    "sy_symbol": "SY-mMEV",
+    "pendle_SY": "0x77891c7f756d4f49d91E6aAbAE7DF5C1169F2AAA",
+    "pendle_PT": "0x1132065009850C72E27B7950C0f9285d1D103589",
+    "pendle_YT": "0xe67377Eb4fFc6cDb85F421697a01ec98C0d6D5cd",
+    "eqb_token": "0x46Ef6D012Bc197b9730C931D9BC4a0Fb5b3362D1",
+    "eqb_reward_pool": "0x6Cb577f8996fdD1F1132Bd002D9F30d3ec33E817"
+  },
+  {
+    "eqb_pid": "201",
+    "pendle_lpt": "0xcBEeD3364912bCee868cfA9cff6Fe865C85eA094",
+    "pendle_lpt_expiry": "2025-07-31",
+    "sy_symbol": "SY-mEDGE",
+    "pendle_SY": "0xB5130E951e5D8D77AC2fD1ca40982d03b2483782",
+    "pendle_PT": "0x7f01d0FCe9BC646389483384C41B4d71c7139f11",
+    "pendle_YT": "0x365466ede498d32cF65d22405420a777c021180c",
+    "eqb_token": "0x07969306f72607a5a148386D0C65F137FD802327",
+    "eqb_reward_pool": "0x7f44dC73a2a73087e6a4f574C5F07F70d58e30eB"
   }
 ];
 
-const saved_eqb_pools_updated_at = 1745392495;
+const saved_eqb_pools_updated_at = 1745735831;
