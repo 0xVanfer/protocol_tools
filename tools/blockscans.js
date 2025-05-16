@@ -3,7 +3,7 @@ const blockscans = [
     { name: "Avalanche (43114)", url: "https://snowscan.xyz/" },
     { name: "Base (8453)", url: "https://basescan.org/" },
     { name: "Bera (80094)", url: "https://berascan.com/" },
-    { name: "Blast (238)", url: "https://blastscan.io/" },
+    { name: "Blast (81457)", url: "https://blastscan.io/" },
     { name: "BSC (56)", url: "https://bscscan.com/" },
     { name: "Celo (42220)", url: "https://celoscan.io/" },
     { name: "Centrifuge (2031)", url: "https://centrifuge.subscan.io/" },
