@@ -2496,7 +2496,40 @@ const saved_eqb_pools = [
     "pendle_YT": "0xF2ad4eC58033BE97Ec3f4f61b660156fB38ECB30",
     "eqb_token": "0x3E68C93FdD943db4d64eE1b91Cd91BC1da149686",
     "eqb_reward_pool": "0x52BF12073e5C182b05dD62722d944DEcc606BD86"
+  },
+  {
+    "eqb_pid": "227",
+    "pendle_lpt": "0x23f0dEcc26ecEeafa5CC900F8B47D99FF94DDD2B",
+    "pendle_lpt_expiry": "2025-09-04",
+    "sy_symbol": "SY-YU",
+    "pendle_SY": "0x385D17215295a186C1FF0d1fd121831694dd9Ba4",
+    "pendle_PT": "0x076BdA095a434a7B00733115A0D679DE6478d9f8",
+    "pendle_YT": "0x1F509072388208A698C8D5784BDA2702CaE06f9c",
+    "eqb_token": "0xd909DbC19b10612df7928760D2b01f23031210DD",
+    "eqb_reward_pool": "0x5532A9a70Af1f85831C4d35C1D64b7A62d23362c"
+  },
+  {
+    "eqb_pid": "228",
+    "pendle_lpt": "0x2353193fa14A6477a4523e2C078e4063022FCf66",
+    "pendle_lpt_expiry": "2025-09-04",
+    "sy_symbol": "SY-iUSD",
+    "pendle_SY": "0x47743a9203E636674467Ff58B7AB0aE0ee6f97cb",
+    "pendle_PT": "0x5f2F6324AA5590e408BA892e39ceC4C0afB16068",
+    "pendle_YT": "0x3D4BE24b33B56B1dC493067b65d91EB6639e1f72",
+    "eqb_token": "0x665300665388283Fb77b25854A946496CF9819eA",
+    "eqb_reward_pool": "0x053f876598c2642ec186CF0acA299DE1eE4Bc199"
+  },
+  {
+    "eqb_pid": "229",
+    "pendle_lpt": "0xD4f6592DE90024e541187527d7F1dE83F6Cb6a52",
+    "pendle_lpt_expiry": "2025-08-28",
+    "sy_symbol": "SY-sGHO",
+    "pendle_SY": "0xc7c6BFE2D67893887bA7969c176feE9dba1D63D7",
+    "pendle_PT": "0x9304037325E7EC5b2E0A9DcDF33c785EE2f5b179",
+    "pendle_YT": "0x442bf716e0e25Ddd23546074CC901De5B6659eb8",
+    "eqb_token": "0x9c2b38c946693258dC880A85E3C709396c397308",
+    "eqb_reward_pool": "0x1b21aA165C35ae10c169BE2b0d082a453bc8e842"
   }
 ];
 
-const saved_eqb_pools_updated_at = 1749632322;
+const saved_eqb_pools_updated_at = 1750235117;
