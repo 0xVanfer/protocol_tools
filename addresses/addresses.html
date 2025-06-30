@@ -92,5 +92,16 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filtersInput = document.getElementById('filters');
+            filtersInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('findAddressBtn').click();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

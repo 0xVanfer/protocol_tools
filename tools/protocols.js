@@ -101,6 +101,7 @@ const protocols = [
     { name: "Tether", url: "https://tether.to/" },
     { name: "Thena", url: "https://thena.fi/" },
     { name: "Traderjoe", url: "https://lfj.gg/" },
+    { name: "Treehouse", url: "https://www.treehouse.finance/" },
     { name: "Trust Wallet", url: "https://trustwallet.com/" },
     { name: "Uniswap", url: "https://app.uniswap.org/swap" },
     { name: "Vector", url: "https://vectorfinance.io/" },
