@@ -44,23 +44,40 @@ async function getVaultInfoByAddress(chainName, vaultAddress){
 
     try {
         if (vaultAddress === "0x3498fDed9C88Ae83b3BC6a302108F2da408e613b") {
-            decimals = await vault.decimals();
-            symbol = await vault.symbol();
-            underlying = await vault.asset();
-            redeemOperatorAddress = await vault.redeemOperator();
-            const lpPrice = ethers.utils.formatUnits((await vault.exchangePrice()), decimals);
+            const calls = [
+                { contract: vault, method: "decimals" },
+                { contract: vault, method: "symbol" },
+                { contract: vault, method: "asset" },
+                { contract: vault, method: "redeemOperator" },
+                { contract: vault, method: "exchangePrice" }
+            ];
+            const results = await executeMulticall(RPC, calls);
+            
+            decimals = results[0];
+            symbol = results[1];
+            underlying = results[2];
+            redeemOperatorAddress = results[3];
+            const lpPrice = ethers.utils.formatUnits(results[4], decimals);
+            
             redeemOperator = new ethers.Contract(redeemOperatorAddress, abi_yl_redeem_operator, RPC);
 
             newVaultInfo.set("revenueRate", 0.1);
             newVaultInfo.set("exitFeeRate", 0);
             newVaultInfo.set("lpPrice", lpPrice);
         } else {
-            decimals = await vault.decimals();
-            const vaultParams = await vault.getVaultParams();
+            const calls = [
+                { contract: vault, method: "decimals" },
+                { contract: vault, method: "getVaultParams" },
+                { contract: vault, method: "exchangePrice" }
+            ];
+            const results = await executeMulticall(RPC, calls);
+
+            decimals = results[0];
+            const vaultParams = results[1];
             underlying = vaultParams.underlyingToken;
             symbol = vaultParams.symbol;
             redeemOperatorAddress = vaultParams.redeemOperator;
-            const lpPrice = ethers.utils.formatUnits((await vault.exchangePrice()), decimals);
+            const lpPrice = ethers.utils.formatUnits(results[2], decimals);
 
             newVaultInfo.set("revenueRate", ethers.utils.formatUnits(vaultParams.revenueRate, 4));
             newVaultInfo.set("exitFeeRate", ethers.utils.formatUnits(vaultParams.exitFeeRate, 4));

@@ -1,4 +1,4 @@
-const networks = ["ethereum", "arbitrum"];
+const networks = ["ethereum", "arbitrum", "bsc", "mantle", "sei"];
 const mapping = {};
 
 async function fetchVaults(network) {
@@ -25,21 +25,12 @@ async function initializeMappings() {
     populateDropdown("blockchain_yl_info", "vaultName_yl_info")
     populateDropdown("blockchain_history_csv", "vaultName_history_csv")
     populateDropdown("blockchain_pending_withdrawals", "vaultName_pending_withdrawals")
-    populateDropdown("blockchain_user_history", "vaultName_user_history")
-
-    // set the default date to today
-    setDefaultDate();
 
     setElementValueAndScrollDown("output", ``);
     unlockButtons('.tag-button');
 }
 
-function setDefaultDate(){
-   const currentDate = new Date();
-   const formattedDate = currentDate.toISOString().split('T')[0];
-   document.getElementById('start_date_user_history').value = formattedDate;
-   document.getElementById('end_date_user_history').value = formattedDate;
-}
+
 
 function populateDropdown(chainSelectID, vaultSelectID) {
     const blockchainSelect = document.getElementById(chainSelectID);

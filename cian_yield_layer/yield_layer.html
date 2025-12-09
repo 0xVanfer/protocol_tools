@@ -11,9 +11,11 @@
     <script src="../common/buttons.js" defer></script>
     <script src="../common/element.js" defer></script>
     <script src="../common/get_block_by_timestamp.js" defer></script>
+    <script src="../common/multicall.js" defer></script>
     <script src="../common/csv.js" defer></script>
 
     <script src="../abi/yield_layer.js" defer></script>
+    <script src="../abi/multicall.js" defer></script>
     
     <script src="./scripts.js" defer></script>
 
@@ -106,47 +108,7 @@
                 </div>
             </div>
 
-            <!-- Pending Withdrawals from Onchain -->
-            <div class="tag">
-                <div class="tag-header">
-                    <h2>User History</h2>
-                </div>
-                <div class="tag-body">
-                    <div class="option">
-                        <label for="blockchain_user_history">Select Blockchain:</label>
-                        <select id="blockchain_user_history" required>
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                    </div>
-                    <div class="option">
-                        <label for="vaultName_user_history">Select Vault:</label>
-                        <select id="vaultName_user_history" required>
-                            <!-- Options will be populated based on selected blockchain -->
-                        </select>
-                    </div>
-                    <div class="option">
-                        <label for="address_input_user_history">User Address:</label>
-                        <textarea id="address_input_user_history" class="addresses_input" placeholder="Enter Ethereum addresses"></textarea>
-                    </div>
-                    <div class="option">
-                        <label for="downloadCsv_user_history">Download In CSV</label>
-                        <select id="downloadCsv_user_history">
-                            <option value="false">False</option>
-                            <option value="true">True</option>
-                        </select>
-                    </div>
-                    <div class="option">
-                        <label for="start_date_user_history">Start Date:</label>
-                        <input type="date" id="start_date_user_history" required>
-                    </div>
-                    <div class="option">
-                        <label for="end_date_user_history" style="white-space: pre;">End  Date:</label>
-                        <input type="date" id="end_date_user_history" required>
-                    </div>
-                    <br>
-                    <button id="get_user_history" class="tag-button">Get User History Info</button>
-                </div>
-            </div>
+
         </div>
 
         <div class="main-content">

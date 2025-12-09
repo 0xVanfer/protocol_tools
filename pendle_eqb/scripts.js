@@ -16,28 +16,70 @@ async function updateEQBPendleBooster(force = false) {
     EQBPoolLength = await EQB_PENDLE_BOOSTER.poolLength();
 }
 
-async function getEQBPoolInfoByPid(pid){
-    const poolInfo = await EQB_PENDLE_BOOSTER.poolInfo(pid);
-    const ipMarketContract = new ethers.Contract(poolInfo.market, abi_ipmarket, RPC_PROVIDER_ETH);
-    const [SY, PT, YT] = await ipMarketContract.readTokens();
-    const expiryTimestamp = await ipMarketContract.expiry();
-    const sy = new ethers.Contract(SY, abi_erc20metadata, RPC_PROVIDER_ETH);
-    const sysymbol = await sy.symbol();
-    const expiryFormatted = formatDateOnly(expiryTimestamp);
+async function getEQBPoolInfoByPids(pids) {
+    // Batch 1: poolInfo
+    const poolInfoCalls = pids.map(pid => ({
+        contract: EQB_PENDLE_BOOSTER,
+        method: "poolInfo",
+        params: [pid]
+    }));
+    const poolInfos = await executeMulticall(RPC_PROVIDER_ETH, poolInfoCalls);
 
-    const poolInfoJSON = {
-        "eqb_pid": pid,
-        "pendle_lpt": poolInfo.market,
-        "pendle_lpt_expiry": expiryFormatted,
-        "sy_symbol": sysymbol,
-        "pendle_SY": SY,
-        "pendle_PT": PT,
-        "pendle_YT": YT,
-        "eqb_token": poolInfo.token,
-        "eqb_reward_pool": poolInfo.rewardPool
-    };
+    // Filter valid poolInfos
+    const validPoolInfos = poolInfos.map((info, idx) => ({ info, pid: pids[idx] })).filter(x => x.info);
+    if (validPoolInfos.length === 0) return [];
 
-    return poolInfoJSON;
+    // Batch 2: readTokens and expiry
+    const marketCalls = [];
+    validPoolInfos.forEach(({ info }) => {
+        const ipMarketContract = new ethers.Contract(info.market, abi_ipmarket, RPC_PROVIDER_ETH);
+        marketCalls.push({ contract: ipMarketContract, method: "readTokens" });
+        marketCalls.push({ contract: ipMarketContract, method: "expiry" });
+    });
+
+    const marketResults = await executeMulticall(RPC_PROVIDER_ETH, marketCalls);
+
+    // Batch 3: SY symbol
+    const syCalls = [];
+    const validMarketResults = [];
+    
+    for (let i = 0; i < validPoolInfos.length; i++) {
+        const readTokens = marketResults[i * 2];
+        const expiry = marketResults[i * 2 + 1];
+        
+        if (!readTokens || !expiry) continue;
+        
+        const [SY, PT, YT] = readTokens;
+        const sy = new ethers.Contract(SY, abi_erc20metadata, RPC_PROVIDER_ETH);
+        syCalls.push({ contract: sy, method: "symbol" });
+        
+        validMarketResults.push({
+            pid: validPoolInfos[i].pid,
+            poolInfo: validPoolInfos[i].info,
+            SY, PT, YT,
+            expiry
+        });
+    }
+    
+    if (validMarketResults.length === 0) return [];
+
+    const syResults = await executeMulticall(RPC_PROVIDER_ETH, syCalls);
+
+    return validMarketResults.map((data, idx) => {
+        const sysymbol = syResults[idx];
+        const expiryFormatted = formatDateOnly(data.expiry);
+        return {
+            "eqb_pid": data.pid,
+            "pendle_lpt": data.poolInfo.market,
+            "pendle_lpt_expiry": expiryFormatted,
+            "sy_symbol": sysymbol,
+            "pendle_SY": data.SY,
+            "pendle_PT": data.PT,
+            "pendle_YT": data.YT,
+            "eqb_token": data.poolInfo.token,
+            "eqb_reward_pool": data.poolInfo.rewardPool
+        };
+    });
 }
 
 function saveEQBPoolsResultAsJSONFile(output) {
@@ -106,12 +148,27 @@ async function updateEQBPendleDetails(forceUpdatePoolLength, printDetails){
 
     if (printDetails) setElementValueAndScrollDown("output", output);
 
-    for (let i = startID; i < maxPools; i++) {
-        const poolInfoJSON = await getEQBPoolInfoByPid(i)
-        output += formatEQBPoolJSON2Output(poolInfoJSON, true);
-        EQBPoolDetails = [...EQBPoolDetails, poolInfoJSON]
-        if (i < maxPools - 1) output += `,`;
-        output += `\n`;
+    const BATCH_SIZE = 10;
+    for (let i = startID; i < maxPools; i += BATCH_SIZE) {
+        const pids = [];
+        for (let j = i; j < Math.min(i + BATCH_SIZE, maxPools); j++) {
+            pids.push(j);
+        }
+        
+        setElementValueAndScrollDown("output", `Fetching pools ${pids[0]} to ${pids[pids.length-1]}...`);
+        const newPools = await getEQBPoolInfoByPids(pids);
+        
+        // Sort by PID just in case
+        newPools.sort((a, b) => a.eqb_pid - b.eqb_pid);
+
+        newPools.forEach(poolInfoJSON => {
+             output += formatEQBPoolJSON2Output(poolInfoJSON, true);
+             EQBPoolDetails.push(poolInfoJSON);
+             const isLast = (poolInfoJSON.eqb_pid === maxPools - 1);
+             if (!isLast) output += `,`;
+             output += `\n`;
+        });
+        
         if (printDetails) setElementValueAndScrollDown("output", output);
     }
 

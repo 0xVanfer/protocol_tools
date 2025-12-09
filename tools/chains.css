@@ -1,13 +1,16 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7fb; /* common.css background */
-    color: #333;
-    line-height: 1.6;
-    margin: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    /* margin-top is handled by navbar.css */
     padding: 0;
 }
 
 .container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
     width: 80%;
     margin: 20px auto;
     background-color: #fff;
